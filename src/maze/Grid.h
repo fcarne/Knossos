@@ -6,14 +6,15 @@
 template <typename T>
 class Grid {
    private:
-    template <typename S>
     class Impl;
-    std::unique_ptr<Impl<T>> pimpl;
+    std::unique_ptr<Impl> pimpl;
 
    public:
     Grid(uint16_t rows, uint16_t cols, const T& initValue = T());
     ~Grid();
     std::shared_ptr<T[]> operator[](uint16_t row);
 };
+
+#include "Grid.hxx"
 
 #endif

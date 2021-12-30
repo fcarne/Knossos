@@ -1,8 +1,12 @@
 #include <iostream>
-
-#include "./maze/Grid.h"
+#include <string>
+class A {
+   public:
+    int value;
+};
 
 int main() {
-    Grid<int> grid(2, 2, 10);
+    A x[10][10];
+    forea
     std::cout << "Hello World" << std::endl;
 }

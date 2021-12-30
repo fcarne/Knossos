@@ -43,3 +43,6 @@
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Eclipse
+.metadata/*
