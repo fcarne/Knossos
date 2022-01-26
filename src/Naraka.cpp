@@ -6,9 +6,10 @@
 //============================================================================
 
 #include <iostream>
+
 using namespace std;
 
-int main() {
+int main_main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }
