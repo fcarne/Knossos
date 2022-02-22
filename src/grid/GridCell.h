@@ -9,6 +9,7 @@
 #define MAZE_GRIDCELL_H_
 
 #include <cstdint>
+#include <iostream>
 #include <unordered_map>
 #include <memory>
 #include <vector>
@@ -37,10 +38,10 @@ public:
 	}
 
 	uint16_t getRow() {
-		return coordinates.y;
+		return coordinates.row;
 	}
 	uint16_t getCol() {
-		return coordinates.x;
+		return coordinates.col;
 	}
 
 	bool isVisited() {

@@ -11,10 +11,10 @@
 #include <string>
 
 struct Point {
-	uint16_t x;
-	uint16_t y;
+	uint16_t col;
+	uint16_t row;
 
-	Point(uint16_t x, uint16_t y): x(x), y(y) {}
+	Point(uint16_t col, uint16_t row): col(col), row(row) {}
 };
 
 class Direction {
@@ -68,11 +68,11 @@ public:
 
 	static Direction getDirection(Point from, Point to) {
 		Value v;
-		if (from.x < to.x) {
+		if (from.col < to.col) {
 			v = Direction::E;
-		} else if (from.x > to.x) {
+		} else if (from.col > to.col) {
 			v = Direction::W;
-		} else if (from.y < to.y) {
+		} else if (from.row < to.row) {
 			v = Direction::S;
 		} else { // from.y > to.y/
 			v = Direction::N;

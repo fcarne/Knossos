@@ -1,14 +1,8 @@
 //============================================================================
-// Name        : Room.h
+// Name        : CrowdedRoom.cpp
 // Author      : Federico Carne 1059865
-// Date		   : 26 gen 2022
-// Description : Room and subclasses definition
+// Date		   : 22 feb 2022
+// Description : 
 //============================================================================
-#ifndef MAZE_ROOM_H_
-#define MAZE_ROOM_H_
+#include <maze/room/CrowdedRoom.h>
 
-class Room {
-};
-
-
-#endif /* MAZE_ROOM_H_ */
