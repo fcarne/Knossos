@@ -7,13 +7,13 @@
 #ifndef ENTITY_ENEMY_H_
 #define ENTITY_ENEMY_H_
 
-#include "Entity.h"
-#include "WanderingEntity.h"
+#include <entity/Entity.h>
+#include <entity/WanderingEntity.h>
 
 class Enemy: virtual public Entity {
 public:
 	using Entity::Entity;
-	void attack(std::shared_ptr<Entity>);
+	virtual void attack(std::shared_ptr<Entity>);
 };
 
 class WanderingEnemy: public Enemy, public WanderingEntity {

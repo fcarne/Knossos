@@ -7,26 +7,26 @@
 
 #include <iostream>
 
-#include "Maze.h"
+#include <maze/Maze.h>
 
 void Maze::print() {
 	for (uint16_t j = 0; j < getWidth() * 2 + 1; ++j)
-		std::cout << "█";
+		std::cout << "██";
 	std::cout << "\n";
 
 	for (uint16_t i = 0; i < getHeight(); ++i) {
-		std::cout << "█";
+		std::cout << "██";
 		for (uint16_t j = 0; j < getWidth(); ++j) {
 			auto cell = getCell(i, j);
-			std::cout << " "
-					<< (cell->hasNeighbourInDirection(Direction::E) ? " " : "█");
+			std::cout << "  "
+					<< (cell->hasNeighbourInDirection(Direction::E) ? "  " : "██");
 		}
-		std::cout << "\n" << "█";
+		std::cout << "\n" << "██";
 		for (uint16_t j = 0; j < getWidth(); ++j) {
 			auto cell = getCell(i, j);
 			std::cout
-					<< (cell->hasNeighbourInDirection(Direction::S) ? " " : "█")
-					<< "█";
+					<< (cell->hasNeighbourInDirection(Direction::S) ? "  " : "██")
+					<< "██";
 		}
 		std::cout << "\n";
 	}

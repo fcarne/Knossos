@@ -5,7 +5,7 @@
 // Description : MazeGenerator implementation
 //============================================================================
 
-#include "MazeGenerator.h"
+#include <maze/MazeGenerator.h>
 
 MazeGenerator::MazeGenerator(std::unique_ptr<MazeAlgorithm> &alg) {
 	setAlgorithm(alg);

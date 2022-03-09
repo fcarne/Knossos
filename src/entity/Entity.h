@@ -24,13 +24,14 @@ private:
 public:
 	Entity(int16_t hp, int16_t damage, std::shared_ptr<MazeCell> cell,
 			std::string name, std::string type);
+	virtual ~Entity() = default;
 	int16_t getHp();
 	int16_t getDamage();
 	std::string getName() const;
 	std::string getType() const;
 	std::shared_ptr<MazeCell> getCell();
 
-	void defend(int16_t damage);
+	virtual void defend(int16_t damage);
 };
 
 #endif /* ENTITY_ENTITY_H_ */

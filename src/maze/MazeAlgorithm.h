@@ -11,7 +11,7 @@
 #include <vector>
 #include <memory>
 
-#include "Maze.h"
+#include <maze/Maze.h>
 
 class MazeAlgorithm {
 public:

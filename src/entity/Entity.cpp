@@ -5,7 +5,7 @@
 // Description : 
 //============================================================================
 
-#include "Entity.h"
+#include <entity/Entity.h>
 
 Entity::Entity(int16_t hp, int16_t damage, std::shared_ptr<MazeCell> cell,
 		std::string name, std::string type) :

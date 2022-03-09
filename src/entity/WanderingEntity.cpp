@@ -4,7 +4,7 @@
 // Date		   : 22 feb 2022
 // Description : 
 //============================================================================
-#include "WanderingEntity.h"
+#include <entity/WanderingEntity.h>
 
 WanderingEntity::WanderingEntity(int16_t hp, int16_t damage,
 		std::shared_ptr<MazeCell> cell, std::string name, std::string type,

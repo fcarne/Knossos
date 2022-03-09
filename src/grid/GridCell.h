@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-#include "Directions.h"
+#include <grid/Directions.h>
 
 template<typename CellContent> class Grid;
 
@@ -26,7 +26,7 @@ private:
 	std::shared_ptr<Content> content;
 	std::unordered_map<Direction, std::weak_ptr<GridCell>> connectedNeighbours;
 
-	friend class Grid<Content> ;
+	friend class Grid<Content>;
 public:
 	GridCell(uint16_t row, uint16_t col, const Content &initValue) : coordinates(col, row), visited(false) {
 		content = std::make_shared<Content>(initValue);

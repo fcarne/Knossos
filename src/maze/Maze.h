@@ -8,7 +8,7 @@
 #define MAZE_MAZE_H_
 
 #include <grid/Grid.h>
-#include "room/Room.h"
+#include <maze/room/Room.h>
 
 typedef GridCell<Room> MazeCell;
 

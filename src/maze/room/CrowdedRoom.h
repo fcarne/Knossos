@@ -7,7 +7,7 @@
 #ifndef MAZE_ROOM_CROWDEDROOM_H_
 #define MAZE_ROOM_CROWDEDROOM_H_
 
-#include "Room.h"
+#include <maze/room/Room.h>
 
 class CrowdedRoom: public Room {
 };

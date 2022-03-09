@@ -13,7 +13,7 @@
 #include <map>
 #include <vector>
 
-#include "GridCell.h"
+#include <grid/GridCell.h>
 
 template<typename CellContent>
 class Grid {

@@ -11,7 +11,7 @@
 #include <memory>
 #include <random>
 
-#include "MazeAlgorithm.h"
+#include <maze/MazeAlgorithm.h>
 
 class MazeGenerator {
 private:
