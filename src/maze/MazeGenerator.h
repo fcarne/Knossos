@@ -19,8 +19,8 @@ private:
 public:
 	MazeGenerator(std::unique_ptr<MazeAlgorithm> &alg);
 
-	std::unique_ptr<Maze> generate(uint16_t height, uint16_t width,
-			const Point &startingCell = Point(0, 0), const Room &cellValue =
+	std::unique_ptr<Maze> generate(uint16_t height, uint16_t width, bool showConstruction = true,
+			const Coordinates &startingCell = Coordinates(0, 0), const Room &cellValue =
 					Room(), const uint32_t seed = 0);
 
 	void setAlgorithm(std::unique_ptr<MazeAlgorithm> &alg);

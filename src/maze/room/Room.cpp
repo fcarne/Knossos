@@ -1,15 +1,18 @@
 //============================================================================
-// Name        : CrowdedRoom.h
+// Name        : Room.cpp
 // Author      : Federico Carne 1059865
-// Date		   : 22 feb 2022
+// Date		   : 11 mar 2022
 // Description : 
 //============================================================================
-#ifndef MAZE_ROOM_CROWDEDROOM_H_
-#define MAZE_ROOM_CROWDEDROOM_H_
 
 #include <maze/room/Room.h>
 
-class CrowdedRoom: public Room {
-};
+Room::Room(): heroIn(false) {}
 
-#endif /* MAZE_ROOM_CROWDEDROOM_H_ */
+bool Room::isHeroIn() {
+	return heroIn;
+}
+
+void Room::setHeroIn(bool in) {
+	heroIn = in;
+}

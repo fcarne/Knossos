@@ -10,12 +10,7 @@
 #include <cstdint>
 #include <string>
 
-struct Point {
-	uint16_t col;
-	uint16_t row;
-
-	Point(uint16_t col, uint16_t row): col(col), row(row) {}
-};
+#include <grid/Coordinates.h>
 
 class Direction {
 public:
@@ -23,7 +18,8 @@ public:
 		N, S, E, W
 	};
 
-	//Direction() = default;
+	Direction(): value(N) {}
+
 	constexpr Direction(Value d) :
 			value(d) {
 	}
@@ -62,11 +58,12 @@ public:
 		case Direction::N: return "North";
 		case Direction::S: return "South";
 		case Direction::W: return "West";
-		default: return "East";
+		default:
+			return "East";
 		}
 	}
 
-	static Direction getDirection(Point from, Point to) {
+	static Direction getDirection(Coordinates from, Coordinates to) {
 		Value v;
 		if (from.col < to.col) {
 			v = Direction::E;

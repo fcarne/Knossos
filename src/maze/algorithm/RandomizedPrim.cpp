@@ -9,7 +9,8 @@
 #include <set>
 
 std::unique_ptr<Maze> RandomizedPrim::generate(uint16_t height, uint16_t width,
-		const Point &startingCell, const Room &cellValue, const uint32_t seed) {
+		bool showConstruction, const Coordinates &startingCell,
+		const Room &cellValue, const uint32_t seed) {
 
 	auto maze = std::make_unique<Maze>(height, width, cellValue);
 	std::mt19937 mt(seed);  // Random generator - Mersenne Twister algorithm
@@ -36,13 +37,15 @@ std::unique_ptr<Maze> RandomizedPrim::generate(uint16_t height, uint16_t width,
 		neighbours = getNeighbours(*maze, cell->getCoordinates(), false);
 		pathSet.insert(neighbours.begin(), neighbours.end());
 		pathSet.erase(cellIt);
+
+		printWhileConstructing(*maze, showConstruction);
 	}
 
 	return maze;
 }
 
 std::vector<std::shared_ptr<MazeCell>> RandomizedPrim::getNeighbours(Maze &maze,
-		Point coordinates, bool in) {
+		Coordinates coordinates, bool in) {
 	std::vector<std::shared_ptr<MazeCell>> neighbours;
 	uint16_t row = coordinates.row;
 	uint16_t col = coordinates.col;
@@ -50,14 +53,18 @@ std::vector<std::shared_ptr<MazeCell>> RandomizedPrim::getNeighbours(Maze &maze,
 	if (row - 1 >= 0 && maze(row - 1, col)->isVisited() == in) {
 		neighbours.push_back(maze(row - 1, col));
 	}
+
 	if (row + 1 < maze.getHeight() && maze(row + 1, col)->isVisited() == in) {
 		neighbours.push_back(maze(row + 1, col));
 	}
+
 	if (col - 1 >= 0 && maze(row, col - 1)->isVisited() == in) {
 		neighbours.push_back(maze(row, col - 1));
 	}
+
 	if (col + 1 < maze.getWidth() && maze(row, col + 1)->isVisited() == in) {
 		neighbours.push_back(maze(row, col + 1));
 	}
+
 	return neighbours;
 }

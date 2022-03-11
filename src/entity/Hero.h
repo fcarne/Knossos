@@ -8,22 +8,30 @@
 #define ENTITY_HERO_H_
 
 #include <memory>
+#include <string>
 
-#include <entity/WanderingEntity.h>
 #include <entity/Enemy.h>
+#include <artifact/equipment/Weapon.h>
+#include <artifact/equipment/Armor.h>
 
-class Hero: public WanderingEntity {
+class Hero: public Entity {
 private:
-	uint16_t armorDefense;
-	uint16_t weaponAttack;
-	uint16_t lastDamage;
-	/* conditions */
+	std::string name;
+	std::shared_ptr<Weapon> weapon;
+	std::shared_ptr<Armor> armor;
 public:
-	Hero(int16_t hp, int16_t damage, std::shared_ptr<MazeCell> cell,
-				std::string name, std::string type,
-				std::function<void(MazeCell&)> _move);
-	void attack(std::shared_ptr<Enemy> enemy);
-	virtual void defend(uint16_t damage);
+	Hero(std::string name, int16_t hp, uint16_t damage,
+			std::shared_ptr<MazeCell> cell, std::string tile);
+	uint16_t attack(std::shared_ptr<Enemy>);
+	uint16_t defend(uint16_t damage) override;
+	virtual bool move(Direction);
+
+	void equipWeapon(std::shared_ptr<Weapon>);
+	void equipArmor(std::shared_ptr<Armor>);
+	void unequipWeapon();
+	void unequipArmor();
+	std::shared_ptr<Weapon> getWeapon() const;
+	std::shared_ptr<Armor> getArmor() const;
 };
 
 #endif /* ENTITY_HERO_H_ */

@@ -8,30 +8,36 @@
 #define ENTITY_ENTITY_H_
 
 #include <cstdint>
-#include <functional>
+#include <random>
+#include <memory>
 #include <string>
 
 #include <maze/Maze.h>
 
 class Entity {
+public:
+	enum class Alignment : uint8_t {
+		NEUTRAL, AGGRESSIVE, FRIENDLY
+	};
 protected:
 	int16_t hp;
-	int16_t damage;
+	uint16_t damage;
 	std::shared_ptr<MazeCell> currentCell;
-private:
-	std::string name;
-	std::string type;
+	Alignment alignment;
+	std::string tile;
+	std::mt19937 mt;
 public:
-	Entity(int16_t hp, int16_t damage, std::shared_ptr<MazeCell> cell,
-			std::string name, std::string type);
+	Entity(int16_t hp, uint16_t damage, std::shared_ptr<MazeCell> cell,
+			Alignment alignment, std::string tile);
 	virtual ~Entity() = default;
-	int16_t getHp();
-	int16_t getDamage();
-	std::string getName() const;
-	std::string getType() const;
-	std::shared_ptr<MazeCell> getCell();
 
-	virtual void defend(int16_t damage);
+	int16_t getHp();
+	uint16_t getDamage();
+	std::shared_ptr<MazeCell> getCell();
+	Alignment getAlignment();
+	std::string getTile() const;
+
+	virtual uint16_t defend(uint16_t damage);
 };
 
 #endif /* ENTITY_ENTITY_H_ */

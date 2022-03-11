@@ -13,27 +13,30 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
-#include <grid/Directions.h>
+#include <grid/Coordinates.h>
+#include <grid/Direction.h>
 
 template<typename CellContent> class Grid;
 
 template<typename Content>
 class GridCell {
 private:
-	Point coordinates;
+	Coordinates coordinates;
 	bool visited;
 	std::shared_ptr<Content> content;
 	std::unordered_map<Direction, std::weak_ptr<GridCell>> connectedNeighbours;
 
-	friend class Grid<Content>;
+	friend class Grid<Content> ;
 public:
-	GridCell(uint16_t row, uint16_t col, const Content &initValue) : coordinates(col, row), visited(false) {
+	GridCell(uint16_t row, uint16_t col, const Content &initValue) :
+			coordinates(col, row), visited(false) {
 		content = std::make_shared<Content>(initValue);
 	}
 	~GridCell() = default;
 
-	Point getCoordinates() {
+	Coordinates getCoordinates() {
 		return coordinates;
 	}
 
@@ -64,8 +67,22 @@ public:
 	}
 
 	std::shared_ptr<GridCell> getNeighbour(Direction d) {
-		if(hasNeighbourInDirection(d)) return connectedNeighbours.at(d).lock();
-		else return nullptr;
+		if (hasNeighbourInDirection(d))
+			return connectedNeighbours.at(d).lock();
+		else
+			return nullptr;
+	}
+
+	std::vector<Direction> getNeighboursDirection() {
+		std::vector<Direction> directions;
+
+		std::transform(
+		    connectedNeighbours.begin(),
+		    connectedNeighbours.end(),
+		    std::back_inserter(directions),
+		    [](const std::pair<Direction, std::weak_ptr<GridCell>> &pair){return pair.first;});
+
+		return directions;
 	}
 
 	void addNeighbour(Direction d, const std::shared_ptr<GridCell> neighbour) {

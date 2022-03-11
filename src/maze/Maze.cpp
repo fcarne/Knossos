@@ -19,16 +19,26 @@ void Maze::print() {
 		for (uint16_t j = 0; j < getWidth(); ++j) {
 			auto cell = getCell(i, j);
 			std::cout << "  "
-					<< (cell->hasNeighbourInDirection(Direction::E) ? "  " : "██");
+					<< (cell->hasNeighbourInDirection(Direction::E) ?
+							"  " : "██");
 		}
 		std::cout << "\n" << "██";
 		for (uint16_t j = 0; j < getWidth(); ++j) {
 			auto cell = getCell(i, j);
 			std::cout
-					<< (cell->hasNeighbourInDirection(Direction::S) ? "  " : "██")
-					<< "██";
+					<< (cell->hasNeighbourInDirection(Direction::S) ?
+							"  " : "██") << "██";
 		}
 		std::cout << "\n";
 	}
 	std::cout << std::endl;
+}
+
+bool Maze::checkWinningMove(Coordinates &c, Direction d) {
+	return winningRoom == c && winningDirection == d;
+}
+
+void Maze::setWinningMove(Coordinates c, Direction d) {
+	winningRoom = c;
+	winningDirection = d;
 }

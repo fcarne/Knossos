@@ -12,11 +12,13 @@ MazeGenerator::MazeGenerator(std::unique_ptr<MazeAlgorithm> &alg) {
 }
 
 std::unique_ptr<Maze> MazeGenerator::generate(uint16_t height, uint16_t width,
-		const Point &startingCell, const Room &cellValue, const uint32_t seed) {
+		bool showConstruction, const Coordinates &startingCell,
+		const Room &cellValue, const uint32_t seed) {
 	if (width < 1 || height < 1)
 		return nullptr;
 
-	return algorithm->generate(height, width, startingCell, cellValue, seed);
+	return algorithm->generate(height, width, showConstruction, startingCell,
+			cellValue, seed);
 }
 
 void MazeGenerator::setAlgorithm(std::unique_ptr<MazeAlgorithm> &alg) {

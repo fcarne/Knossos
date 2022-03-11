@@ -7,18 +7,27 @@
 #ifndef ENTITY_ENEMY_H_
 #define ENTITY_ENEMY_H_
 
+#include <string>
+#include <random>
+
 #include <entity/Entity.h>
-#include <entity/WanderingEntity.h>
+#include <entity/Breed.h>
 
-class Enemy: virtual public Entity {
-public:
-	using Entity::Entity;
-	virtual void attack(std::shared_ptr<Entity>);
-};
+class Enemy: public Entity, private Breed {
+	friend class Breed;
 
-class WanderingEnemy: public Enemy, public WanderingEntity {
+private:
+	Enemy(Breed&, std::shared_ptr<MazeCell> cell);
+
 public:
-	using WanderingEntity::WanderingEntity;
+	using Entity::damage;
+	using Entity::getDamage;
+	using Breed::getBreedName;
+	using Breed::getAttackString;
+	using Entity::getTile;
+
+	virtual uint16_t attack(std::shared_ptr<Entity>);
+	virtual std::shared_ptr<MazeCell> move();
 };
 
 #endif /* ENTITY_ENEMY_H_ */

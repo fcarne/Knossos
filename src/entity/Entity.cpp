@@ -7,26 +7,35 @@
 
 #include <entity/Entity.h>
 
-Entity::Entity(int16_t hp, int16_t damage, std::shared_ptr<MazeCell> cell,
-		std::string name, std::string type) :
-		hp(hp), damage(damage), currentCell(cell), name(name), type(type) {
+Entity::Entity(int16_t hp, uint16_t damage, std::shared_ptr<MazeCell> cell, Alignment alignment, std::string tile) :
+		hp(hp), damage(damage), currentCell(cell), alignment(alignment),  tile(tile) {
+	uint32_t a = (uint32_t) hp;
+		uint32_t b = (uint32_t) damage;
+		uint32_t seed  = (a >= b) ? a * a + a + b : a + b * b;
+		mt = std::mt19937(seed);
 }
+
 int16_t Entity::getHp() {
 	return hp;
 }
-int16_t Entity::getDamage() {
+
+uint16_t Entity::getDamage() {
 	return damage;
 }
-std::string Entity::getName() const {
-	return name;
-}
-std::string Entity::getType() const {
-	return type;
-}
+
 std::shared_ptr<MazeCell> Entity::getCell() {
 	return currentCell;
 }
 
-void Entity::defend(int16_t damage) {
+Entity::Alignment Entity::getAlignment() {
+	return alignment;
+}
+
+std::string Entity::getTile() const {
+	return tile;
+}
+
+uint16_t Entity::defend(uint16_t damage) {
 	hp -= damage;
+	return damage;
 }

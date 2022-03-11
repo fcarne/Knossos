@@ -6,3 +6,7 @@
 //============================================================================
 #include <artifact/Trap.h>
 
+Trap::Trap(std::string name, std::string description, uint8_t damage,
+		std::function<void(std::shared_ptr<Hero>)> effect) :
+		Artifact(name, description, true, effect), damage(damage) {
+}

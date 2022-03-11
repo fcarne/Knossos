@@ -5,10 +5,10 @@
 // Description : GridCell test
 //============================================================================
 
+#include <grid/Direction.h>
 #include <iostream>
 
 #include "../src/grid/GridCell.h"
-#include "../src/grid/Directions.h"
 
 class A {
 	int x;

@@ -9,7 +9,8 @@
 #include <set>
 
 std::unique_ptr<Maze> SideWinder::generate(uint16_t height, uint16_t width,
-		const Point &startingCell, const Room &cellValue, const uint32_t seed) {
+		bool showConstruction, const Coordinates &startingCell,
+		const Room &cellValue, const uint32_t seed) {
 	if (width < 1 || height < 1)
 		return nullptr;
 
@@ -42,6 +43,8 @@ std::unique_ptr<Maze> SideWinder::generate(uint16_t height, uint16_t width,
 				maze->connect(c1, c2);
 				runSet.clear(); // Empty the run set and continue line scan
 			}
+
+			printWhileConstructing(*maze, showConstruction);
 		}
 
 		runSet.clear();

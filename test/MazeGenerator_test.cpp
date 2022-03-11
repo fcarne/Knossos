@@ -10,14 +10,16 @@
 
 #include "../src/maze/MazeGenerator.h"
 #include "../src/maze/algorithm/RecursiveDivision.h"
+#include "../src/maze/algorithm/RandomizedPrim.h"
+#include "../src/maze/algorithm/SideWinder.h"
 
 
 int main() {
 
 	std::unique_ptr<MazeAlgorithm> algorithm;
-	algorithm = std::make_unique<RecursiveDivision>();
+	algorithm = std::make_unique<SideWinder>();
 	MazeGenerator generator(algorithm);
-	std::unique_ptr<Maze> maze = generator.generate(5, 5, Point(0,0), Room(), 0);
+	std::unique_ptr<Maze> maze = generator.generate(5, 5);
 
 	maze->print();
 	return 0;

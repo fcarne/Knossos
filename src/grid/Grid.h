@@ -24,7 +24,7 @@ private:
 	uint16_t width;
 	std::vector<std::shared_ptr<Cell>> data;
 
-	int getIndex(uint16_t row, uint16_t col) {
+	int calculateIndex(uint16_t row, uint16_t col) {
 		return row * width + col;
 	}
 
@@ -39,16 +39,18 @@ public:
 				//std::cout << i <<" - " << j << " -> " << getIndex(i, j) << *data[getIndex(i,j)] << "\n";
 				if (connected) {
 					if (j > 0)
-						connect(data[getIndex(i, j)], data[getIndex(i, j - 1)]);
+						connect(data[calculateIndex(i, j)],
+								data[calculateIndex(i, j - 1)]);
 					if (i > 0)
-						connect(data[getIndex(i, j)], data[getIndex(i - 1, j)]);
+						connect(data[calculateIndex(i, j)],
+								data[calculateIndex(i - 1, j)]);
 				}
 			}
 		}
 	}
 
 	std::shared_ptr<Cell> getCell(uint16_t row, uint16_t col) {
-		return data[getIndex(row, col)];
+		return data[calculateIndex(row, col)];
 	}
 
 	std::shared_ptr<Cell> operator()(uint16_t row, uint16_t col) {
@@ -70,11 +72,11 @@ public:
 	}
 
 	void disconnect(std::shared_ptr<Cell> c1, Direction d) {
-			std::shared_ptr<Cell> c2 = c1->getNeighbour(d);
-			c1->removeNeighbour(d);
-			if(c2!=nullptr)
-				c2->removeNeighbour(d.opposite());
-		}
+		std::shared_ptr<Cell> c2 = c1->getNeighbour(d);
+		c1->removeNeighbour(d);
+		if (c2 != nullptr)
+			c2->removeNeighbour(d.opposite());
+	}
 
 	uint16_t getWidth() {
 		return width;
