@@ -14,7 +14,7 @@ struct Coordinates {
 	uint16_t row;
 
 	Coordinates() :
-			col(0), row(0) {
+			col(-1), row(-1) {
 	}
 	Coordinates(uint16_t col, uint16_t row) :
 			col(col), row(row) {

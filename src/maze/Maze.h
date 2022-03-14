@@ -8,9 +8,10 @@
 #define MAZE_MAZE_H_
 
 #include <grid/Grid.h>
-#include <maze/room/Room.h>
 #include <grid/Coordinates.h>
 #include <grid/Direction.h>
+
+#include <maze/room/Room.h>
 
 typedef GridCell<Room> MazeCell;
 
@@ -21,9 +22,11 @@ private:
 public:
 	using Grid<Room>::Grid;
 
-	void print();
-	bool checkWinningMove(Coordinates& c, Direction d);
-	void setWinningMove(Coordinates c, Direction d);
+	void draw(bool drawRooms = false);
+	bool checkWinningMove(std::shared_ptr<MazeCell> current, Direction d);
+	void setWinningMove(std::shared_ptr<MazeCell> startingRoom, uint32_t seed = 0);
+
+	friend std::ostream& operator<<(std::ostream &outs, Maze &m);
 };
 
 #endif /* MAZE_MAZE_H_ */

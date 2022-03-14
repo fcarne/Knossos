@@ -17,11 +17,13 @@
 int main() {
 
 	std::unique_ptr<MazeAlgorithm> algorithm;
-	algorithm = std::make_unique<SideWinder>();
+	algorithm = std::make_unique<RecursiveDivision>();
 	MazeGenerator generator(algorithm);
 	std::unique_ptr<Maze> maze = generator.generate(5, 5);
 
-	maze->print();
+	maze->draw();
+
+	std::cout << *maze;
 	return 0;
 }
 

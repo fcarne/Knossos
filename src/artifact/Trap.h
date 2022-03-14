@@ -18,6 +18,7 @@ private:
 public:
 	Trap(std::string name, std::string description, uint8_t damage,
 			std::function<void(std::shared_ptr<Hero>)> effect);
+	uint8_t getDamage();
 };
 
 #endif /* ARTIFACT_TRAP_H_ */

@@ -81,8 +81,17 @@ public:
 	uint16_t getWidth() {
 		return width;
 	}
+
 	uint16_t getHeight() {
 		return height;
+	}
+
+	uint16_t getLastColumnIndex() {
+		return width - 1;
+	}
+
+	uint16_t getLastRowIndex() {
+		return height - 1;
 	}
 };
 

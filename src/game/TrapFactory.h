@@ -13,13 +13,18 @@
 
 #include <artifact/Trap.h>
 
-enum class TrapType: uint8_t {
-	SPIKES /* damage */, ICE_SLOPE /* moves randonly */, LANDSLIDE /*removes weapon*/, FIRE_ARROWS /* halves defense */, POISONED_BARBS /* paralyzes - stops time*/
+enum class TrapType : uint8_t {
+	SPIKES /* damage */,
+	ICE_SLOPE /* moves randomly */,
+	COLLAPSED_ROOF /*removes weapon*/,
+	FIRE_ARROWS /* halves defense */,
+	POISONED_BARBS /* paralyzes - stops time*/
 };
 
 class TrapFactory {
 private:
 	std::mt19937 mt;
+	std::uniform_real_distribution<> dis;
 public:
 	TrapFactory(uint32_t seed = 0);
 	std::shared_ptr<Trap> make_trap(TrapType type);

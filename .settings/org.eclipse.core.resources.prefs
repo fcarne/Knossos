@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/maze/Maze.cpp=UTF-8
 encoding//src/maze/MazeGenerator.cpp=UTF-8
+encoding//src/utils/Constants.cpp=UTF-8
+encoding//src/utils/Constants.h=UTF-8

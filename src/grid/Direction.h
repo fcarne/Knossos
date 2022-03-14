@@ -31,6 +31,9 @@ public:
 	constexpr bool operator==(Direction d) const {
 		return value == d.value;
 	}
+	constexpr bool operator==(Direction::Value d) const {
+			return value == d;
+		}
 	constexpr bool operator!=(Direction d) const {
 		return value != d.value;
 	}

@@ -18,6 +18,8 @@
 #include <grid/Coordinates.h>
 #include <grid/Direction.h>
 
+#include <utils/Utils.h>
+
 template<typename CellContent> class Grid;
 
 template<typename Content>
@@ -36,7 +38,7 @@ public:
 	}
 	~GridCell() = default;
 
-	Coordinates getCoordinates() {
+	const Coordinates& getCoordinates() {
 		return coordinates;
 	}
 
@@ -74,15 +76,7 @@ public:
 	}
 
 	std::vector<Direction> getNeighboursDirection() {
-		std::vector<Direction> directions;
-
-		std::transform(
-		    connectedNeighbours.begin(),
-		    connectedNeighbours.end(),
-		    std::back_inserter(directions),
-		    [](const std::pair<Direction, std::weak_ptr<GridCell>> &pair){return pair.first;});
-
-		return directions;
+		return utils::keyList(connectedNeighbours);
 	}
 
 	void addNeighbour(Direction d, const std::shared_ptr<GridCell> neighbour) {
