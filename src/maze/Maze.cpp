@@ -14,9 +14,6 @@
 
 void Maze::draw(bool drawRooms) {
 
-	std::shared_ptr<MazeCell> cell;
-	std::shared_ptr<Room> room;
-
 	// NORTH BOUND - ALWAYS
 	std::cout << constants::WALL_TILE;
 	for (uint16_t j = 0; j < getWidth(); ++j) {
@@ -37,8 +34,8 @@ void Maze::draw(bool drawRooms) {
 
 		// FIRST ROW
 		for (uint16_t j = 0; j < getWidth(); ++j) {
-			cell = getCell(i, j);
-			room = cell->getContent();
+			auto cell = getCell(i, j);
+			auto room = cell->getContent();
 			bool visible = room->isVisible();
 
 			// DRAW ROOM
@@ -72,8 +69,8 @@ void Maze::draw(bool drawRooms) {
 		// SECOND ROW
 		for (uint16_t j = 0; j < getWidth(); ++j) {
 
-			cell = getCell(i, j);
-			room = cell->getContent();
+			auto cell = getCell(i, j);
+			auto room = cell->getContent();
 			bool visible = room->isVisible();
 
 			// DRAW SOUTH WALL - LAST CELL OR HASN'T NEIGHBOUR AND ONE OF THE TWO ROOMS IS VISIBLE
@@ -85,7 +82,7 @@ void Maze::draw(bool drawRooms) {
 
 			bool exit = lastIndex && winningDirection == Direction::S
 					&& j == winningRoom.col;
-			if (exit || drawRooms)
+			if (exit && drawRooms)
 				std::cout << constants::EXIT_TILE;
 			else
 				std::cout
@@ -94,9 +91,11 @@ void Maze::draw(bool drawRooms) {
 
 			// DRAW SOUTH-EAST WALL
 			std::cout
-					<< (!drawRooms || visible
+					<< (lastIndex || j == getLastColumnIndex() || !drawRooms
+							|| visible
 							|| getCell(i, j + 1)->getContent()->isVisible()
-							|| getCell(i + 1, j)->getContent()->isVisible() ?
+							|| getCell(i + 1, j)->getContent()->isVisible()
+							|| getCell(i + 1, j + 1)->getContent()->isVisible() ?
 							constants::WALL_TILE : constants::EMPTY_TILE);
 		}
 		std::cout << "\n";

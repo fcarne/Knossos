@@ -14,11 +14,13 @@
 class GameMode {
 protected:
 	std::unique_ptr<Maze> maze;
+	/*
+	 * void gameOver();
+	 * void win();
+	 */
 public:
-	void start();
-	void gameOver();
-	void playerMove();
-	void win();
+	void initGame(); // cin dimensions, player data, seed, ..., set traps
+	void play(); // start reading inputs and display maze
 };
 
 #endif /* GAME_GAMEMODE_H_ */
