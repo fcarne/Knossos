@@ -12,7 +12,7 @@
 
 Weapon::Weapon(std::string name, std::string description, uint16_t damage) :
 		Artifact(name, description, false, [this](std::shared_ptr<Hero> hero) {
-			hero->equipWeapon(std::make_shared<Weapon>(*this));
+			hero->equipWeapon(shared_from_this());
 		}), damage(damage) {
 }
 

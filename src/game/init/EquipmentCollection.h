@@ -4,8 +4,8 @@
 // Date		   : 11 mar 2022
 // Description : 
 //============================================================================
-#ifndef GAME_EQUIPMENTCOLLECTION_H_
-#define GAME_EQUIPMENTCOLLECTION_H_
+#ifndef GAME_INIT_EQUIPMENTCOLLECTION_H_
+#define GAME_INIT_EQUIPMENTCOLLECTION_H_
 
 #include <vector>
 #include <memory>
@@ -32,4 +32,4 @@ public:
 	void loadWeapons(std::string);
 };
 
-#endif /* GAME_EQUIPMENTCOLLECTION_H_ */
+#endif /* GAME_INIT_EQUIPMENTCOLLECTION_H_ */

@@ -31,10 +31,16 @@ uint16_t Hero::defend(uint16_t damage) {
 
 bool Hero::move(Direction d) {
 	if (currentCell->hasNeighbourInDirection(d)) {
+		currentCell->getContent()->setHero(nullptr);
 		currentCell = currentCell->getNeighbour(d);
+		currentCell->getContent()->setHero(shared_from_this());
 		return true;
 	} else
 		return false;
+}
+
+std::string Hero::getName() const {
+	return name;
 }
 
 void Hero::equipWeapon(std::shared_ptr<Weapon> weapon) {

@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <functional>
 #include <fstream>
+#include <chrono>
 
 namespace utils {
 inline void clear_screen() {
@@ -67,6 +68,19 @@ inline void parseJsonIntoMap(std::string filename, std::unordered_map<K, V> map,
 
 	std::transform(j.begin(), j.end(), std::inserter(map, map.end()), parser);
 }
+
+template<class ...Durations, class DurationIn>
+inline std::tuple<Durations...> break_down_durations(DurationIn d) {
+	std::tuple<Durations...> retval;
+	using discard=int[];
+	(void) discard { 0,
+			(void((
+				(std::get<Durations>(retval) = std::chrono::duration_cast<Durations>(d)),
+				(d -= std::chrono::duration_cast<DurationIn>(std::get<Durations>(retval)))
+			)),0)... };
+	return retval;
 }
+}
+
 
 #endif /* UTILS_UTILS_H_ */

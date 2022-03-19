@@ -11,7 +11,7 @@
 
 #include <memory>
 
-class Weapon: public Artifact {
+class Weapon: public Artifact, public std::enable_shared_from_this<Weapon> {
 private:
 	uint16_t damage;
 public:

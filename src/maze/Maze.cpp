@@ -19,7 +19,8 @@ void Maze::draw(bool drawRooms) {
 	for (uint16_t j = 0; j < getWidth(); ++j) {
 		bool exit = winningDirection == Direction::N && j == winningRoom.col;
 		std::cout
-				<< (exit && drawRooms ?
+				<< (exit && drawRooms
+						&& getCell(0, j)->getContent()->isVisible() ?
 						constants::EXIT_TILE : constants::WALL_TILE)
 				<< constants::WALL_TILE;
 	}
@@ -29,7 +30,8 @@ void Maze::draw(bool drawRooms) {
 		// WEST BOUND 1 - ALWAYS
 		bool exit = winningDirection == Direction::W && i == winningRoom.row;
 		std::cout
-				<< (exit && drawRooms ?
+				<< (exit && drawRooms
+						&& getCell(i, 0)->getContent()->isVisible() ?
 						constants::EXIT_TILE : constants::WALL_TILE);
 
 		// FIRST ROW
@@ -47,15 +49,15 @@ void Maze::draw(bool drawRooms) {
 			// DRAW EAST WALL - LAST CELL OR HASN'T NEIGHBOUR, IF drawRooms CHECK IF ONE OF THE TWO ROOMS IS VISIBLE
 			bool lastIndex = j == getLastColumnIndex();
 			bool drawEastWall =
-					lastIndex || (!(cell->hasNeighbourInDirection(Direction::E)) &&
-							(!drawRooms || visible
+					lastIndex
+							|| (!(cell->hasNeighbourInDirection(Direction::E))
+									&& (!drawRooms || visible
 											|| getCell(i, j + 1)->getContent()->isVisible()));
-
 
 			bool exit = lastIndex && winningDirection == Direction::E
 					&& i == winningRoom.row;
 
-			if (exit && drawRooms)
+			if (exit && drawRooms && visible)
 				std::cout << constants::EXIT_TILE;
 			else
 				std::cout
@@ -76,13 +78,14 @@ void Maze::draw(bool drawRooms) {
 			// DRAW SOUTH WALL - LAST CELL OR HASN'T NEIGHBOUR AND ONE OF THE TWO ROOMS IS VISIBLE
 			bool lastIndex = i == getLastRowIndex();
 			bool drawSoutWall =
-					lastIndex || (!cell->hasNeighbourInDirection(Direction::S) &&
-							(!drawRooms || visible
+					lastIndex
+							|| (!cell->hasNeighbourInDirection(Direction::S)
+									&& (!drawRooms || visible
 											|| getCell(i + 1, j)->getContent()->isVisible()));
 
 			bool exit = lastIndex && winningDirection == Direction::S
 					&& j == winningRoom.col;
-			if (exit && drawRooms)
+			if (exit && drawRooms && visible)
 				std::cout << constants::EXIT_TILE;
 			else
 				std::cout
@@ -107,15 +110,11 @@ bool Maze::checkWinningMove(std::shared_ptr<MazeCell> current, Direction d) {
 	return winningRoom == current->getCoordinates() && winningDirection == d;
 }
 
-void Maze::setWinningMove(std::shared_ptr<MazeCell> startingRoom,
-		uint32_t seed) {
-	auto coords = startingRoom->getCoordinates();
-	std::map<Direction, uint16_t> distances = {
-			{ Direction::N, coords.row },
-			{ Direction::S, getLastRowIndex() - coords.row },
-			{ Direction::W, coords.col },
-			{ Direction::E, getLastColumnIndex() - coords.col },
-	};
+void Maze::setWinningMove(Coordinates &startingCoords, uint32_t seed) {
+	std::map<Direction, uint16_t> distances = { { Direction::N,
+			startingCoords.row }, { Direction::S, getLastRowIndex()
+			- startingCoords.row }, { Direction::W, startingCoords.col }, {
+			Direction::E, getLastColumnIndex() - startingCoords.col }, };
 
 	using pair_type = decltype(distances)::value_type;
 	winningDirection = std::max_element(distances.begin(), distances.end(),
@@ -156,7 +155,8 @@ std::ostream& operator<<(std::ostream &outs, Maze &m) {
 		for (uint16_t j = 0; j < m.getWidth(); ++j) {
 			auto cell = m(i, j);
 			outs << "  "
-					<< (cell->hasNeighbourInDirection(Direction::E) ? "  " : "##");
+					<< (cell->hasNeighbourInDirection(Direction::E) ?
+							"  " : "##");
 		}
 		outs << "\n" << "##";
 		for (uint16_t j = 0; j < m.getWidth(); ++j) {

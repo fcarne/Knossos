@@ -15,7 +15,7 @@
 
 #include <entity/Hero.h>
 
-int main() {
+int main_mazegenerator_test() {
 
 	std::unique_ptr<MazeAlgorithm> algorithm;
 	algorithm = std::make_unique<RecursiveDivision>();
@@ -24,15 +24,15 @@ int main() {
 
 	maze->draw(true);
 	auto hero = std::shared_ptr<Hero>(new Hero("A", 1, 1, nullptr, "AA"));
-	maze->getCell(2, 2)->getContent()->setHeroIn(hero);
+	maze->getCell(2, 2)->getContent()->setHero(hero);
 	maze->draw(true);
 
-	maze->getCell(1, 2)->getContent()->setHeroIn(hero);
+	maze->getCell(1, 2)->getContent()->setHero(hero);
 	maze->draw(true);
 
-	maze->getCell(2, 1)->getContent()->setHeroIn(hero);
+	maze->getCell(2, 1)->getContent()->setHero(hero);
 	maze->draw(true);
-	maze->getCell(2, 0)->getContent()->setHeroIn(hero);
+	maze->getCell(2, 0)->getContent()->setHero(hero);
 	maze->draw(true);
 
 	std::cout << *maze;

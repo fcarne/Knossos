@@ -24,7 +24,7 @@ public:
 
 	void draw(bool drawRooms = false);
 	bool checkWinningMove(std::shared_ptr<MazeCell> current, Direction d);
-	void setWinningMove(std::shared_ptr<MazeCell> startingRoom, uint32_t seed = 0);
+	void setWinningMove(Coordinates& startingCoords, uint32_t seed = 0);
 
 	friend std::ostream& operator<<(std::ostream &outs, Maze &m);
 };

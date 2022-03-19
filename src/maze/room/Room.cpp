@@ -16,7 +16,7 @@ Room::Room() :
 		visible(false) {
 }
 
-void Room::setHeroIn(std::shared_ptr<Hero> hero) {
+void Room::setHero(std::shared_ptr<Hero> hero) {
 	this->hero = hero;
 	visible = visible || (hero != nullptr);
 }

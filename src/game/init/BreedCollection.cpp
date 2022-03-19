@@ -4,9 +4,10 @@
 // Date		   : 11 mar 2022
 // Description : 
 //============================================================================
-#include <game/BreedCollection.h>
+#include <game/init/BreedCollection.h>
 
 #include <functional>
+
 #include <utils/Utils.h>
 
 BreedCollection::BreedCollection(uint32_t seed) :

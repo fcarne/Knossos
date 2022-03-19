@@ -11,4 +11,7 @@ extern const std::string WALL_TILE = "██";
 extern const std::string EMPTY_TILE = "  ";
 extern const std::string EXIT_TILE = "▓▓";
 extern const std::string DEFAULT_HERO_TILE = "[]";
+
+extern const uint16_t MIN_MAZE_HEIGHT = 5u;
+extern const uint16_t MIN_MAZE_WIDTH = 5u;
 }

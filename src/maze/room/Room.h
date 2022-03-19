@@ -23,7 +23,7 @@ public:
 	Room();
 	virtual ~Room() = default;
 
-	void setHeroIn(std::shared_ptr<Hero>);
+	void setHero(std::shared_ptr<Hero>);
 	bool isVisible();
 
 	std::shared_ptr<Artifact> getArtifact();

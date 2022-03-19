@@ -4,10 +4,11 @@
 // Date		   : 11 mar 2022
 // Description : 
 //============================================================================
-#include <game/EquipmentCollection.h>
+#include <game/init/EquipmentCollection.h>
 
 #include <experimental/algorithm>
 #include <functional>
+
 #include <utils/Utils.h>
 
 EquipmentCollection::EquipmentCollection(uint32_t seed) :

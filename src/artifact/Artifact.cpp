@@ -17,6 +17,14 @@ std::string Artifact::getName() const {
 	return name;
 }
 
+std::string Artifact::getDescription() const {
+	return description;
+}
+
+bool Artifact::isAutomatic() {
+	return automaticActivation;
+}
+
 void Artifact::activate(std::shared_ptr<Hero> hero) {
 	_effect(hero);
 }

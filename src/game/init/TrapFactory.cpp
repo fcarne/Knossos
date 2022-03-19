@@ -4,12 +4,12 @@
 // Date		   : 11 mar 2022
 // Description : 
 //============================================================================
-#include <game/TrapFactory.h>
+#include <game/init/TrapFactory.h>
 
 #include <string>
 #include <functional>
 #include <chrono>
-#include <libs/mingw-std-threads/mingw.thread.h>
+#include <thread>
 
 #include <entity/Hero.h>
 
@@ -32,7 +32,7 @@ std::shared_ptr<Trap> TrapFactory::make_trap(TrapType type) {
 		break;
 	}
 	case TrapType::ICE_SLOPE: {
-		auto effect = [=](std::shared_ptr<Hero> hero) {
+		auto effect = [this](std::shared_ptr<Hero> hero) {
 			auto directions = hero->getCell()->getNeighboursDirection();
 			std::uniform_int_distribution<> dis(0, directions.size());
 			Direction d = directions.at(dis(mt));

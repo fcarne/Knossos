@@ -21,10 +21,12 @@ private:
 	std::function<void(std::shared_ptr<Hero>)> _effect;
 public:
 	Artifact(std::string name, std::string description, bool automaticActivation, std::function<void(std::shared_ptr<Hero>)> effect);
+	virtual ~Artifact() = default;
+
 	std::string getName() const;
 	std::string getDescription() const;
+	bool isAutomatic();
 
-	virtual ~Artifact() = default;
 	virtual void activate(std::shared_ptr<Hero>) final;
 };
 

@@ -7,9 +7,11 @@
 #ifndef ARTIFACT_ARMOR_H_
 #define ARTIFACT_ARMOR_H_
 
+#include <memory>
+
 #include <artifact/Artifact.h>
 
-class Armor: public Artifact {
+class Armor: public Artifact, public std::enable_shared_from_this<Armor> {
 private:
 	uint16_t defense;
 public:

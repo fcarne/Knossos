@@ -9,11 +9,12 @@
 
 #include <string>
 #include <random>
+#include <memory.h>
 
 #include <entity/Entity.h>
 #include <entity/Breed.h>
 
-class Enemy: public Entity, private Breed {
+class Enemy: public Entity, private Breed, public std::enable_shared_from_this<Enemy> {
 	friend class Breed;
 
 private:

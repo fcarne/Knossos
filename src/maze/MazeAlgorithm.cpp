@@ -8,12 +8,12 @@
 #include <maze/MazeAlgorithm.h>
 
 #include <chrono>
-#include <libs/mingw-std-threads/mingw.thread.h>
+#include <thread>
 #include <utils/Utils.h>
 
 void MazeAlgorithm::printWhileConstructing(Maze &maze, bool showConstruction) {
 	if (showConstruction) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		utils::clear_screen();
 		maze.draw();
 	}

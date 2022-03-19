@@ -14,7 +14,7 @@
 #include <artifact/equipment/Weapon.h>
 #include <artifact/equipment/Armor.h>
 
-class Hero: public Entity {
+class Hero: public Entity, public std::enable_shared_from_this<Hero> {
 private:
 	std::string name;
 	std::shared_ptr<Weapon> weapon;
@@ -25,6 +25,8 @@ public:
 	uint16_t attack(std::shared_ptr<Enemy>);
 	uint16_t defend(uint16_t damage) override;
 	virtual bool move(Direction);
+
+	std::string getName() const;
 
 	void equipWeapon(std::shared_ptr<Weapon>);
 	void equipArmor(std::shared_ptr<Armor>);
