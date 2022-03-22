@@ -22,6 +22,7 @@ public:
 	std::vector<std::weak_ptr<Enemy>> getEnemies();
 	void addEnemy(std::shared_ptr<Enemy>);
 	void removeEnemy(std::shared_ptr<Enemy>);
+	uint16_t getEnemiesNumber();
 	void draw() override;
 };
 

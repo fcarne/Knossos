@@ -25,6 +25,7 @@ public:
 
 	std::string getName() const;
 	std::string getDescription() const;
+	virtual std::string toString();
 	bool isAutomatic();
 
 	virtual void activate(std::shared_ptr<Hero>) final;

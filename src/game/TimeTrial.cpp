@@ -27,8 +27,8 @@ void TimeTrial::initGame() {
 	std::cout << "Number of traps: ";
 	std::cin >> nTraps;
 
-	std::uniform_int_distribution<> disCol(0, maze->getLastColumnIndex());
-	std::uniform_int_distribution<> disRow(0, maze->getLastRowIndex());
+	std::uniform_int_distribution<> colRange(0, maze->getLastColumnIndex());
+	std::uniform_int_distribution<> rowRange(0, maze->getLastRowIndex());
 	TrapFactory factory;
 
 	std::vector<Coordinates> prohibited;
@@ -36,24 +36,19 @@ void TimeTrial::initGame() {
 
 	for (uint16_t i = 0u; i < nTraps; i++) {
 		auto trap = factory.make_trap(TrapType::POISONED_BARBS);
-		Coordinates c(disCol(mt), disRow(mt));
-
-		while (std::find(prohibited.begin(), prohibited.end(), c)
-				!= prohibited.end()) {
-			c = Coordinates(disCol(mt), disRow(mt));
-		}
-
-		maze->getCell(c.row, c.col)->getContent()->setArtifact(trap);
-
-		prohibited.push_back(c);
-		if (prohibited.size() == maze->getWidth() * maze->getHeight())
+		bool stillSpace = setArtifact(trap, prohibited, rowRange, colRange);
+		if (!stillSpace)
 			break;
 	}
 
-	std::cout << "Setup complete!\n";
+	std::cout << "---------------\n";
+	std::cout << "Setup complete!\n\n";
 
 }
 void TimeTrial::play() {
+	std::cout << "Help:\n";
+	printHelp();
+
 	std::cout
 			<< "When you're ready, press the Enter key... Remember, you have to be fast!\n";
 	std::cin.ignore();
@@ -91,6 +86,9 @@ void TimeTrial::play() {
 	// stop timer, give result, ask for save and retry
 	auto stop = std::chrono::high_resolution_clock::now();
 
+	maze->draw(true);
+	std::cout << "\n";
+
 	std::cout << "Congratulations " << hero->getName()
 			<< ", you found the exit!\n";
 
@@ -111,9 +109,6 @@ void TimeTrial::printDescription() {
 			<< "Run through the maze and find the exit in the least time possible.\n";
 	std::cout
 			<< "Beware, there will be poisoned traps that will paralyze you!\n\n";
-
-	std::cout << "Help:\n";
-	printHelp();
 
 	std::cout << "Press any key to continue...\n";
 	std::cin.ignore();

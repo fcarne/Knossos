@@ -22,7 +22,8 @@ std::vector<std::shared_ptr<Weapon>> EquipmentCollection::getWeapons() {
 	return weaponList;
 }
 
-std::vector<std::shared_ptr<Armor>> EquipmentCollection::pickArmors(uint8_t n) {
+std::vector<std::shared_ptr<Armor>> EquipmentCollection::pickArmors(
+		uint16_t n) {
 	std::vector<std::shared_ptr<Armor>> selected;
 
 	std::experimental::sample(armorList.begin(), armorList.end(),
@@ -32,7 +33,7 @@ std::vector<std::shared_ptr<Armor>> EquipmentCollection::pickArmors(uint8_t n) {
 }
 
 std::vector<std::shared_ptr<Weapon>> EquipmentCollection::pickWeapons(
-		uint8_t n) {
+		uint16_t n) {
 	std::vector<std::shared_ptr<Weapon>> selected;
 
 	std::experimental::sample(weaponList.begin(), weaponList.end(),

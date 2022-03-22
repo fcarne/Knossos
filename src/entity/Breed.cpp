@@ -8,13 +8,16 @@
 
 #include <entity/Enemy.h>
 Breed::Breed(uint16_t maxHp, uint16_t damage, std::string attackString,
-		std::string breedName, MovePattern movePattern, std::string tile) :
+		std::string breedName, uint16_t breedPopulation,
+		MovePattern movePattern, std::string sprite) :
 		maxHp(maxHp), damage(damage), attackString(attackString), breedName(
-				breedName), movePattern(movePattern), tile(tile) {
+				breedName), breedPopulation(breedPopulation), movePattern(
+				movePattern), sprite(sprite) {
 }
 
 std::shared_ptr<Enemy> Breed::newEnemy(std::shared_ptr<MazeCell> cell) {
-	return std::shared_ptr<Enemy>(new Enemy(*this, cell));
+	return breedPopulation-- > 0 ?
+			std::shared_ptr<Enemy>(new Enemy(*this, cell)) : nullptr;
 }
 
 uint16_t Breed::getMaxHp() {
@@ -33,10 +36,14 @@ std::string Breed::getBreedName() const {
 	return breedName;
 }
 
+uint16_t Breed::getBreedPopulation() {
+	return breedPopulation;
+}
+
 MovePattern& Breed::getMovePattern() {
 	return movePattern;
 }
 
-std::string Breed::getTile() const {
-	return tile;
+std::string Breed::getSprite() const {
+	return sprite;
 }

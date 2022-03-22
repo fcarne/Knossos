@@ -21,6 +21,11 @@ std::string Artifact::getDescription() const {
 	return description;
 }
 
+std::string Artifact::toString() {
+	return "Name: " + name + "\n" + description;
+}
+
+
 bool Artifact::isAutomatic() {
 	return automaticActivation;
 }

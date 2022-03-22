@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstdint>
 #include <fstream>
+#include <conio.h>
 
 #include <utils/Constants.h>
 #include <maze/MazeAlgorithm.h>
@@ -16,13 +17,6 @@
 #include <maze/algorithm/RandomizedPrim.h>
 #include <maze/algorithm/RecursiveDivision.h>
 #include <maze/algorithm/SideWinder.h>
-
-const char GameMode::UP_KEY = 'w';
-const char GameMode::DOWN_KEY = 's';
-const char GameMode::LEFT_KEY = 'a';
-const char GameMode::RIGHT_KEY = 'd';
-const char GameMode::HELP_KEY = 'q';
-const char GameMode::EXIT_KEY = 'e';
 
 GameMode::GameMode(Room roomInit) :
 		room(roomInit) {
@@ -40,7 +34,7 @@ void GameMode::initGame() {
 	std::getline(std::cin, tile);
 
 	if (tile.length() < 2) {
-		tile = constants::DEFAULT_HERO_TILE;
+		tile = constants::DEFAULT_HERO_SPRITE;
 		std::cout << "Too short, defaulted to " << tile << "\n";
 	} else if (tile.length() > 2) {
 		tile = tile.substr(0, 2);
@@ -158,7 +152,7 @@ void GameMode::saveMaze() {
 }
 
 void GameMode::printHelp() {
-	std::cout << "You are: " << hero->getTile() << "\n";
+	std::cout << "You are: " << hero->getSprite() << "\n";
 	std::cout << "The exit is: " << constants::EXIT_TILE << "\n";
 
 	std::cout << "You must hit enter to execute a command\n";
@@ -175,7 +169,7 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 	do {
 		wasDirection = true;
 		std::cout << "Which direction do you wanna go? ";
-		std::cin >> c;
+		c = _getch();
 
 		switch (c) {
 		case UP_KEY:
@@ -206,4 +200,22 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 
 	return {d, false};
 
+}
+
+bool GameMode::setArtifact(std::shared_ptr<Artifact> artifact,
+		std::vector<Coordinates> prohibited,
+		std::uniform_int_distribution<> rowRange,
+		std::uniform_int_distribution<> colRange) {
+
+	Coordinates c(colRange(mt), rowRange(mt));
+
+	while (std::find(prohibited.begin(), prohibited.end(), c)
+			!= prohibited.end()) {
+		c = Coordinates(colRange(mt), rowRange(mt));
+	}
+
+	maze->getCell(c.row, c.col)->getContent()->setArtifact(artifact);
+
+	prohibited.push_back(c);
+	return prohibited.size() < (maze->getWidth() * maze->getHeight());
 }

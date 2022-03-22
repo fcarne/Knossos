@@ -7,8 +7,8 @@
 #include <entity/Hero.h>
 
 Hero::Hero(std::string name, int16_t hp, uint16_t damage,
-		std::shared_ptr<MazeCell> cell, std::string tile) :
-		Entity(hp, damage, cell, Alignment::NEUTRAL, tile), name(name) {
+		std::shared_ptr<MazeCell> cell, std::string sprite) :
+		Entity(hp, damage, cell, Alignment::NEUTRAL, sprite), name(name) {
 }
 
 uint16_t Hero::attack(std::shared_ptr<Enemy> enemy) {

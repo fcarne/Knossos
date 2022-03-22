@@ -11,6 +11,9 @@
 #include <entity/Hero.h>
 #include <utils/Constants.h>
 
+DungeonRoom::DungeonRoom() {
+}
+
 std::vector<std::weak_ptr<Enemy>> DungeonRoom::getEnemies() {
 	return enemies;
 }
@@ -28,12 +31,16 @@ void DungeonRoom::removeEnemy(std::shared_ptr<Enemy> enemy) {
 			enemies.end());
 }
 
+uint16_t DungeonRoom::getEnemiesNumber() {
+	return enemies.size();
+}
+
 void DungeonRoom::draw() {
 	auto hero = this->hero.lock();
 	if (visible && hero != nullptr) {
-		std::cout << hero->getTile();
+		std::cout << hero->getSprite();
 	} else if (visible && !enemies.empty()) {
-		std::cout << enemies.at(0).lock()->getTile();
+		std::cout << (enemies.at(0).lock()->getSprite());
 	} else {
 		std::cout << constants::EMPTY_TILE;
 	}

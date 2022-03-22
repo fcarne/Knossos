@@ -18,6 +18,7 @@ public:
 	Armor(std::string name, std::string description, uint16_t defense);
 	uint16_t getDefense();
 	void setDefense(uint16_t);
+	std::string toString() override;
 };
 
 #endif /* ARTIFACT_ARMOR_H_ */

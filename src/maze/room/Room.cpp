@@ -42,7 +42,7 @@ std::shared_ptr<Artifact> Room::pickupArtifact() {
 void Room::draw() {
 	auto hero = this->hero.lock();
 	if (visible && hero != nullptr) {
-		std::cout << hero->getTile();
+		std::cout << hero->getSprite();
 	} else {
 		std::cout << constants::EMPTY_TILE;
 	}

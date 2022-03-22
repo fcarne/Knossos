@@ -14,7 +14,7 @@ namespace constants {
 extern const std::string WALL_TILE;
 extern const std::string EMPTY_TILE;
 extern const std::string EXIT_TILE;
-extern const std::string DEFAULT_HERO_TILE;
+extern const std::string DEFAULT_HERO_SPRITE;
 
 extern const uint16_t MIN_MAZE_HEIGHT;
 extern const uint16_t MIN_MAZE_WIDTH;

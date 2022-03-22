@@ -13,7 +13,7 @@
 
 Enemy::Enemy(Breed &breed, std::shared_ptr<MazeCell> cell) :
 		Entity(breed.getMaxHp(), breed.getDamage(), cell, Alignment::AGGRESSIVE,
-				breed.getTile()), Breed(breed) {
+				breed.getSprite()), Breed(breed), turn(0) {
 }
 
 uint16_t Enemy::attack(std::shared_ptr<Entity> entity) {
@@ -22,7 +22,6 @@ uint16_t Enemy::attack(std::shared_ptr<Entity> entity) {
 }
 
 std::shared_ptr<MazeCell> Enemy::move() {
-	static int turn = 0;
 	if (turn < getMovePattern().sleepTurns) {
 		auto room = std::dynamic_pointer_cast<DungeonRoom>(
 				currentCell->getContent());
@@ -38,7 +37,6 @@ std::shared_ptr<MazeCell> Enemy::move() {
 		room = std::dynamic_pointer_cast<DungeonRoom>(
 				currentCell->getContent());
 		room->addEnemy(shared_from_this());
-
 
 	}
 

@@ -24,18 +24,18 @@ protected:
 	uint16_t damage;
 	std::shared_ptr<MazeCell> currentCell;
 	Alignment alignment;
-	std::string tile;
+	std::string sprite;
 	std::mt19937 mt;
 public:
 	Entity(int16_t hp, uint16_t damage, std::shared_ptr<MazeCell> cell,
-			Alignment alignment, std::string tile);
+			Alignment alignment, std::string sprite);
 	virtual ~Entity() = default;
 
 	int16_t getHp();
 	uint16_t getDamage();
 	std::shared_ptr<MazeCell> getCell();
 	Alignment getAlignment();
-	std::string getTile() const;
+	std::string getSprite() const;
 
 	virtual uint16_t defend(uint16_t damage);
 };

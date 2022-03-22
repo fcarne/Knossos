@@ -15,3 +15,7 @@ uint8_t Trap::getDamage() {
 	return damage;
 }
 
+std::string Trap::toString() {
+	return Artifact::toString() + "\n" + "Damage: " + std::to_string(unsigned(damage));
+}
+

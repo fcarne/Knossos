@@ -18,6 +18,7 @@ public:
 	Weapon(std::string name, std::string description, uint16_t damage);
 	uint16_t getDamage();
 	void setDamage(uint16_t);
+	std::string toString() override;
 };
 
 #endif /* ARTIFACT_WEAPON_H_ */

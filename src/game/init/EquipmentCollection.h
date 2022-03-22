@@ -11,6 +11,7 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <cstdint>
 
 #include <artifact/equipment/Armor.h>
 #include <artifact/equipment/Weapon.h>
@@ -25,8 +26,8 @@ public:
 	std::vector<std::shared_ptr<Armor>> getArmors();
 	std::vector<std::shared_ptr<Weapon>> getWeapons();
 
-	std::vector<std::shared_ptr<Armor>> pickArmors(uint8_t);
-	std::vector<std::shared_ptr<Weapon>> pickWeapons(uint8_t);
+	std::vector<std::shared_ptr<Armor>> pickArmors(uint16_t);
+	std::vector<std::shared_ptr<Weapon>> pickWeapons(uint16_t);
 
 	void loadArmors(std::string);
 	void loadWeapons(std::string);

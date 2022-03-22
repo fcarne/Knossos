@@ -11,8 +11,15 @@
 
 #include <game/GameMode.h>
 #include <game/TimeTrial.h>
+#include <game/Dungeon.h>
+
+#include <conio.h>
+#include <windows.h>
 
 int main() {
+
+    SetConsoleOutputCP( 65001 );
+
 	std::string title =
 			R"( _   _                 _         
 | \ | |               | |        
@@ -47,10 +54,11 @@ int main() {
 		mode = std::make_unique<TimeTrial>();
 		break;
 	case 2:
-		//mode = std::make_unique<TimeTrial>();
+		mode = std::make_unique<Dungeon>();
 		break;
 	default:
 		std::cout << "See you later then\n";
+		std::cin.get();
 		return 0;
 	}
 
@@ -61,5 +69,6 @@ int main() {
 	mode->play();
 
 	std::cout << "Thanks for playing\n";
+	std::cin.get();
 	return 0;
 }

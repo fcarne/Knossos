@@ -23,3 +23,7 @@ uint16_t Weapon::getDamage() {
 void Weapon::setDamage(uint16_t damage) {
 	this->damage = damage;
 }
+
+std::string Weapon::toString() {
+	return Artifact::toString() + "\n" + "Damage: " + std::to_string(damage);
+}

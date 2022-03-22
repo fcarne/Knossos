@@ -7,8 +7,8 @@
 
 #include <entity/Entity.h>
 
-Entity::Entity(int16_t hp, uint16_t damage, std::shared_ptr<MazeCell> cell, Alignment alignment, std::string tile) :
-		hp(hp), damage(damage), currentCell(cell), alignment(alignment),  tile(tile) {
+Entity::Entity(int16_t hp, uint16_t damage, std::shared_ptr<MazeCell> cell, Alignment alignment, std::string sprite) :
+		hp(hp), damage(damage), currentCell(cell), alignment(alignment),  sprite(sprite) {
 	uint32_t a = (uint32_t) hp;
 		uint32_t b = (uint32_t) damage;
 		uint32_t seed  = (a >= b) ? a * a + a + b : a + b * b;
@@ -31,8 +31,8 @@ Entity::Alignment Entity::getAlignment() {
 	return alignment;
 }
 
-std::string Entity::getTile() const {
-	return tile;
+std::string Entity::getSprite() const {
+	return sprite;
 }
 
 uint16_t Entity::defend(uint16_t damage) {

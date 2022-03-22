@@ -11,6 +11,7 @@
 #include <random>
 #include <string>
 #include <tuple>
+#include <vector>
 
 #include <maze/Maze.h>
 #include <entity/Hero.h>
@@ -18,12 +19,12 @@
 
 class GameMode {
 protected:
-	static const char UP_KEY;
-	static const char DOWN_KEY;
-	static const char LEFT_KEY;
-	static const char RIGHT_KEY;
-	static const char HELP_KEY;
-	static const char EXIT_KEY;
+	static const char UP_KEY = 'w';
+	static const char DOWN_KEY = 's';
+	static const char LEFT_KEY = 'a';
+	static const char RIGHT_KEY = 'd';
+	static const char HELP_KEY = 'q';
+	static const char EXIT_KEY = 'e';
 
 	std::unique_ptr<Maze> maze;
 	Coordinates startingCoords;
@@ -38,6 +39,10 @@ protected:
 	void saveMaze();
 	virtual void printHelp();
 	std::pair<Direction, bool> readUserInput();
+	bool setArtifact(std::shared_ptr<Artifact> artifact,
+			std::vector<Coordinates> prohibited,
+			std::uniform_int_distribution<> rowRange,
+			std::uniform_int_distribution<> colRange);
 public:
 	virtual ~GameMode() = default;
 	virtual void initGame();

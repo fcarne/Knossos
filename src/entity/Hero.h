@@ -21,7 +21,7 @@ private:
 	std::shared_ptr<Armor> armor;
 public:
 	Hero(std::string name, int16_t hp, uint16_t damage,
-			std::shared_ptr<MazeCell> cell, std::string tile);
+			std::shared_ptr<MazeCell> cell, std::string sprite);
 	uint16_t attack(std::shared_ptr<Enemy>);
 	uint16_t defend(uint16_t damage) override;
 	virtual bool move(Direction);

@@ -23,3 +23,7 @@ uint16_t Armor::getDefense() {
 void Armor::setDefense(uint16_t defense) {
 	this->defense = defense;
 }
+
+std::string Armor::toString() {
+	return Artifact::toString() + "\n" + "Defense: " + std::to_string(defense);
+}

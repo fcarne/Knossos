@@ -15,8 +15,8 @@
 class Enemy;
 
 struct MovePattern {
-	uint8_t tilesNumber;
-	uint8_t sleepTurns;
+	uint16_t tilesNumber;
+	uint16_t sleepTurns;
 };
 
 class Breed {
@@ -25,18 +25,22 @@ private:
 	uint16_t damage;
 	std::string attackString;
 	std::string breedName;
+	uint16_t breedPopulation;
 	MovePattern movePattern;
-	std::string tile;
+	std::string sprite;
 public:
 	Breed(uint16_t maxHp, uint16_t damage, std::string attackString,
-			std::string breedName, MovePattern movePattern, std::string tile);
+			std::string breedName, uint16_t breedPopulation,
+			MovePattern movePattern, std::string sprite);
 	std::shared_ptr<Enemy> newEnemy(std::shared_ptr<MazeCell> cell);
+
 	uint16_t getMaxHp();
 	uint16_t getDamage();
 	std::string getAttackString() const;
 	std::string getBreedName() const;
+	uint16_t getBreedPopulation();
 	MovePattern& getMovePattern();
-	std::string getTile() const;
+	std::string getSprite() const;
 };
 
 #endif /* ENTITY_BREED_H_ */
