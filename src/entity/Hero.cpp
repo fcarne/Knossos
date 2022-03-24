@@ -14,7 +14,7 @@ Hero::Hero(std::string name, int16_t hp, uint16_t damage,
 uint16_t Hero::attack(std::shared_ptr<Enemy> enemy) {
 	uint16_t attackPower = damage
 			+ (weapon != nullptr ? weapon->getDamage() : 0);
-	std::uniform_real_distribution<> dis(0.9, 1.3);
+	std::uniform_real_distribution<> dis(0.9, 1.2);
 	attackPower *= dis(mt);
 	enemy->defend(attackPower);
 

@@ -16,13 +16,17 @@
 
 class Dungeon: public GameMode {
 protected:
-	static const char ATTACK_KEY = 'z';
-	static const char RUN_AWAY_KEY = 'x';
+	enum class FigthResult : uint8_t {
+		DEFEATED, GAME_OVER, ESCAPED, QUIT
+	};
+
+	static const char ATTACK_KEY = 'x';
+	static const char RUN_AWAY_KEY = 'z';
 
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	void printHelp() override;
-	std::tuple<bool, bool, bool> fight(std::shared_ptr<Enemy>);
+	FigthResult fight(std::shared_ptr<Enemy>);
 public:
 	Dungeon();
 	void initGame() override;

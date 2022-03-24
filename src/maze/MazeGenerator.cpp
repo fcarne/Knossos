@@ -13,7 +13,7 @@ MazeGenerator::MazeGenerator(std::unique_ptr<MazeAlgorithm> &alg) {
 
 std::unique_ptr<Maze> MazeGenerator::generate(uint16_t height, uint16_t width,
 		bool showConstruction, const Coordinates &startingCell,
-		const Room &cellValue, const uint32_t seed) {
+		std::shared_ptr<Room> cellValue, const uint32_t seed) {
 	if (width < 1 || height < 1)
 		return nullptr;
 

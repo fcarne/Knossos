@@ -10,6 +10,7 @@
 #include <tuple>
 #include <random>
 #include <cstdint>
+#include <filesystem>
 #include <conio.h>
 
 #include <maze/room/DungeonRoom.h>
@@ -18,7 +19,7 @@
 #include <game/init/BreedCollection.h>
 
 Dungeon::Dungeon() :
-		GameMode(DungeonRoom()) {
+		GameMode(std::make_shared<DungeonRoom>()) {
 }
 
 void Dungeon::initGame() {
@@ -28,6 +29,9 @@ void Dungeon::initGame() {
 	std::uniform_int_distribution<> rowRange(0, maze->getLastRowIndex());
 	std::vector<Coordinates> prohibited;
 	prohibited.push_back(startingCoords);
+
+	std::cout << "\nThis is your current directory:\n"
+			<< std::filesystem::current_path().string();
 
 	std::cout << "\n\n --- EQUIPMENT ---\n\n";
 	EquipmentCollection equipment(mt());
@@ -95,6 +99,7 @@ void Dungeon::initGame() {
 
 	for (auto b : breeds) {
 		std::shared_ptr<Breed> breed = b.second;
+
 		while (breed->getBreedPopulation() > 0) {
 			Coordinates c(colRange(mt), rowRange(mt));
 			while (c == startingCoords)
@@ -124,11 +129,10 @@ void Dungeon::initGame() {
 
 void Dungeon::play() {
 	std::cout << "Help:\n";
-		printHelp();
+	printHelp();
 	std::cout
 			<< "When you're ready, press the Enter key... Remember, kill'em all!\n";
 	std::cin.ignore();
-	std::cin.get();
 	utils::clear_screen();
 
 	bool finish = false;
@@ -139,33 +143,41 @@ void Dungeon::play() {
 	while (!finish && !gameOver) {
 		auto room = std::dynamic_pointer_cast<DungeonRoom>(
 				hero->getCell()->getContent());
+
 		bool automatic = checkArtifact(room);
 		maze->draw(true);
 
-		auto roomEnemies = room->getEnemies();
-		bool escaped;
+		bool escaped = false;
 
-		while (!roomEnemies.empty() && !gameOver) {
-			std::shared_ptr<Enemy> enemy = roomEnemies[0].lock();
-			auto [killed, _escaped, quit] = fight(enemy);
+		while (!room->isEmpty() && !gameOver && !escaped) {
+			std::shared_ptr<Enemy> enemy = room->getFirstEnemy();
+			auto result = fight(enemy);
 
-			if (quit)
-				return;
-
-			if (killed)
+			switch (result) {
+			case Dungeon::FigthResult::DEFEATED:
 				room->removeEnemy(enemy);
-			else if (hero->getHp() < 0)
-				gameOver = true;
-
-			escaped = _escaped;
-			if (_escaped)
+				enemies.erase(
+						std::remove_if(enemies.begin(), enemies.end(),
+								[enemy](std::shared_ptr<Enemy> e) {
+									return e == enemy;
+								}),
+						enemies.end());
 				break;
+			case Dungeon::FigthResult::ESCAPED:
+				escaped = true;
+				break;
+			case Dungeon::FigthResult::GAME_OVER:
+				gameOver = true;
+				break;
+			case Dungeon::FigthResult::QUIT:
+				return;
+			}
 		}
 
 		if (gameOver)
 			break;
 
-		if (!automatic && !escaped) {
+		if (room->getArtifact() != nullptr && !automatic && !escaped) {
 			std::cout << "You found an artifact in this room.\n";
 			std::cout << room->getArtifact()->toString() << "\n";
 
@@ -184,29 +196,28 @@ void Dungeon::play() {
 			std::cout << "You defeated all the enemies, now go to the exit!\n";
 		}
 
-		do {
-			auto [d, quit] = readUserInput();
+		//do {
+		auto [d, quit] = readUserInput();
 
-			if (quit)
-				return;
+		if (quit)
+			return;
 
-			bool winningMove = maze->checkWinningMove(hero->getCell(), d);
+		bool winningMove = maze->checkWinningMove(hero->getCell(), d);
 
-			finish = winningMove && enemies.empty();
+		finish = winningMove && enemies.empty();
 
-			if (winningMove && !enemies.empty()) {
-				std::cout
-						<< "To unlock the exit, you have to defeat the remaining "
-						<< enemies.size() << " enemies.\n";
+		if (winningMove && !enemies.empty()) {
+			std::cout << "To unlock the exit, you have to defeat the remaining "
+					<< enemies.size() << " enemies.\n";
+		}
+
+		if (!finish) {
+			moved = hero->move(d);
+			if (!moved) {
+				std::cout << "You can't go in that direction\n";
 			}
-
-			if (!finish) {
-				moved = hero->move(d);
-				if (!moved) {
-					std::cout << "You can't go in that direction\n";
-				}
-			}
-		} while (!moved);
+		}
+		//} while (!moved);
 
 		std::for_each(enemies.begin(), enemies.end(),
 				[=](std::shared_ptr<Enemy> e) {
@@ -237,20 +248,30 @@ void Dungeon::printHelp() {
 	GameMode::printHelp();
 	std::cout << "During a fight press " << ATTACK_KEY << " to attack and "
 			<< RUN_AWAY_KEY << " to try to escape\n";
+
+	std::cout << "This is your equipment:\n";
+	auto armor = hero->getArmor();
+	auto weapon = hero->getWeapon();
+	std::cout << (armor != nullptr ? armor->toString() : "Armor not equipped")
+			<< "\n";
+	std::cout
+			<< (weapon != nullptr ? weapon->toString() : "Weapon not equipped")
+			<< "\n";
+
 }
 
 void Dungeon::printDescription() {
 	std::cout << "Dungeon:\n";
 	std::cout
-			<< "Explore the dungeon, collect weapons and and fights hordes of enemies.\n";
+			<< "Explore the dungeon, find weapons and fights hordes of enemies.\n";
 	std::cout
 			<< "Pay attention, there will also be some traps that can damage you or change your plan!\n\n";
 
-	std::cout << "Press any key to continue...\n";
+	std::cout << "Press Enter to continue...\n";
 	std::cin.ignore();
 }
 
-std::tuple<bool, bool, bool> Dungeon::fight(std::shared_ptr<Enemy> enemy) {
+Dungeon::FigthResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 	char c;
 	bool wasFightInput;
 
@@ -258,7 +279,7 @@ std::tuple<bool, bool, bool> Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 	std::cout << "Enemy details:\n";
 	std::cout << "Breed: " << enemy->getBreedName() << "\n";
 	std::cout << "HP: " << enemy->getHp() << "\n";
-	std::cout << "Damage: " << enemy->getBreedName() << "\n";
+	std::cout << "Damage: " << enemy->getDamage() << "\n";
 
 	std::uniform_int_distribution<> dungeonDice(1, 20);
 
@@ -266,8 +287,9 @@ std::tuple<bool, bool, bool> Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 
 		do {
 			wasFightInput = true;
-			std::cout << "What do you wanna do, attack or try to escape?: ";
-			c = _getch();
+			std::cout << "What do you wanna do, attack (" << ATTACK_KEY
+					<< ") or try to escape (" << RUN_AWAY_KEY << ")? ";
+			std::cin >> c; //c = _getch(); /////////////////////////////////
 
 			int rolled;
 			switch (c) {
@@ -286,14 +308,14 @@ std::tuple<bool, bool, bool> Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 				}
 
 				std::cout << "Damage done: " << damageDone << ". Enemy's HP: "
-						<< enemy->getHp();
+						<< enemy->getHp() << "\n";
 				break;
 			}
 			case RUN_AWAY_KEY:
 				rolled = dungeonDice(mt);
 				if (rolled >= 5) {
 					std::cout << "You ran away!\n";
-					return {false, true, false};
+					return Dungeon::FigthResult::ESCAPED;
 				}
 				break;
 
@@ -301,24 +323,26 @@ std::tuple<bool, bool, bool> Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 				printHelp();
 				wasFightInput = false;
 				break;
-			case GameMode::EXIT_KEY:
-				return {false, false, true};
+			case GameMode::QUIT_KEY:
+				return Dungeon::FigthResult::QUIT;
 				break;
 			default:
 				std::cout << "Please, enter a valid character\n";
 				wasFightInput = false;
 			}
-		} while (wasFightInput);
+		} while (!wasFightInput);
 
 		if (enemy->getHp() > 0) {
+			std::cout << "Your enemy is attacking!\n";
 			std::cout << enemy->getAttackString() << "\n";
 			uint16_t damageReceived = enemy->attack(hero);
 			std::cout << "Damage received: " << damageReceived
-					<< ". Remaining HP: " << hero->getHp();
+					<< ". Remaining HP: " << hero->getHp() << "\n";
 		}
 
 	} while (enemy->getHp() > 0 && hero->getHp() > 0);
 
-	return {hero->getHp() > 0, false, false};
+	return hero->getHp() > 0 ?
+			Dungeon::FigthResult::DEFEATED : Dungeon::FigthResult::GAME_OVER;
 
 }

@@ -6,16 +6,23 @@
 //============================================================================
 
 #include <iostream>
+#include <memory>
 
-#include "../src/grid/Grid.h"
+#include <grid/Grid.h>
+#include <grid/Clonable.h>
 
-class A {
+class A: public Clonable<A> {
+public:
 	int x;
 	double y;
+	std::shared_ptr<A> clone() override {
+		return std::make_shared<A>(*this);
+	}
+	~A() = default;
 };
 
 int main_grid_test() {
-	Grid<A> grid(3, 4, A(), true);
+	Grid<A> grid(3, 4, std::make_shared<A>(), true);
 	std::cout << grid.getHeight() << " ROWS, " << grid.getWidth() << " COLUMNS!\n";
 	for (int row = 0; row < grid.getHeight(); ++row) {
 		for (int col = 0; col < grid.getWidth(); ++col) {

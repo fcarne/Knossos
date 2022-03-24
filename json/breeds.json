@@ -1,0 +1,14 @@
+[
+	{
+		"maxHp": 128,
+		"damage": 16,
+		"attackString": "Roar!",
+		"breedName": "Baby dragon",
+		"breedPopulation": 2,
+		"pattern": {
+			"tilesNumber": 1,
+			"sleepTurns": 1
+		},
+		"sprite": "@@"
+	}
+]

@@ -19,11 +19,12 @@ private:
 
 public:
 	DungeonRoom();
-	std::vector<std::weak_ptr<Enemy>> getEnemies();
 	void addEnemy(std::shared_ptr<Enemy>);
 	void removeEnemy(std::shared_ptr<Enemy>);
-	uint16_t getEnemiesNumber();
+	std::shared_ptr<Enemy> getFirstEnemy();
+	bool isEmpty();
 	void draw() override;
+	std::shared_ptr<Room> clone() override;
 };
 
 #endif /* MAZE_ROOM_DUNGEONROOM_H_ */

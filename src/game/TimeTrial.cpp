@@ -15,7 +15,7 @@
 #include <game/init/TrapFactory.h>
 
 TimeTrial::TimeTrial() :
-		GameMode(Room()) {
+		GameMode(std::make_shared<Room>()) {
 }
 
 void TimeTrial::initGame() {
@@ -110,6 +110,6 @@ void TimeTrial::printDescription() {
 	std::cout
 			<< "Beware, there will be poisoned traps that will paralyze you!\n\n";
 
-	std::cout << "Press any key to continue...\n";
+	std::cout << "Press Enter to continue...\n";
 	std::cin.ignore();
 }

@@ -29,8 +29,9 @@ private:
 	}
 
 public:
-	Grid(uint16_t height, uint16_t width, const CellContent &cellValue =
-			CellContent(), bool connected = false) :
+	Grid(uint16_t height, uint16_t width,
+			std::shared_ptr<CellContent> cellValue = std::make_shared<
+					CellContent>(), bool connected = false) :
 			height(height), width(width) {
 		data.reserve(height * width);
 		for (uint16_t i = 0; i < height; ++i) {

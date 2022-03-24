@@ -31,15 +31,16 @@ void BreedCollection::loadBreeds(std::string filename) {
 			[](
 					nlohmann::json breed) -> std::pair<std::string,
 							std::shared_ptr<Breed>> {
+
 				MovePattern pattern;
 				pattern.tilesNumber = breed["pattern"]["tilesNumber"];
-				pattern.tilesNumber = breed["pattern"]["tilesNumber"];
+				pattern.sleepTurns = breed["pattern"]["sleepTurns"];
 
-				return std::make_pair(breed["name"],
+				return std::make_pair(breed["breedName"],
 						std::make_shared<Breed>(breed["maxHp"], breed["damage"],
 								breed["attackString"], breed["breedName"],
 								breed["breedPopulation"], pattern,
-								breed["tile"]));
+								breed["sprite"]));
 			};
 
 	utils::parseJsonIntoMap(filename, breedMap, parser);

@@ -11,10 +11,11 @@
 #include <memory>
 
 #include <artifact/Artifact.h>
+#include <grid/Clonable.h>
 
 class Hero;
 
-class Room {
+class Room: public Clonable<Room> {
 protected:
 	std::weak_ptr<Hero> hero;
 	bool visible;
@@ -31,6 +32,8 @@ public:
 	std::shared_ptr<Artifact> pickupArtifact();
 
 	virtual void draw();
+
+	std::shared_ptr<Room> clone() override;
 };
 
 #endif /* MAZE_ROOM_H_ */

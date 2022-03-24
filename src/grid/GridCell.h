@@ -14,9 +14,11 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include <type_traits>
 
 #include <grid/Coordinates.h>
 #include <grid/Direction.h>
+#include <grid/Clonable.h>
 
 #include <utils/Utils.h>
 
@@ -32,9 +34,9 @@ private:
 
 	friend class Grid<Content> ;
 public:
-	GridCell(uint16_t row, uint16_t col, const Content &initValue) :
+	GridCell(uint16_t row, uint16_t col, std::shared_ptr<Content> initValue) :
 			coordinates(col, row), visited(false) {
-		content = std::make_shared<Content>(initValue);
+		content = initValue->clone();
 	}
 	~GridCell() = default;
 

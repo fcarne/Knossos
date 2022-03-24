@@ -18,7 +18,7 @@
 #include <maze/algorithm/RecursiveDivision.h>
 #include <maze/algorithm/SideWinder.h>
 
-GameMode::GameMode(Room roomInit) :
+GameMode::GameMode(std::shared_ptr<Room> roomInit) :
 		room(roomInit) {
 }
 
@@ -106,6 +106,7 @@ void GameMode::initGame() {
 
 	auto cell = maze->getCell(startingCoords.row, startingCoords.col);
 	hero = std::make_shared<Hero>(name, 256, 32, cell, tile);
+
 	cell->getContent()->setHero(hero);
 }
 
@@ -157,7 +158,7 @@ void GameMode::printHelp() {
 
 	std::cout << "You must hit enter to execute a command\n";
 	std::cout << "To show this help, press " << HELP_KEY << "\n";
-	std::cout << "To give up, press " << EXIT_KEY << "\n";
+	std::cout << "To quit, press " << QUIT_KEY << "\n";
 	std::cout << "To move press " << UP_KEY << LEFT_KEY << DOWN_KEY << RIGHT_KEY
 			<< "\n";
 }
@@ -169,7 +170,7 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 	do {
 		wasDirection = true;
 		std::cout << "Which direction do you wanna go? ";
-		c = _getch();
+		std::cin >> c; //c = _getch(); ////////////////////////////////////
 
 		switch (c) {
 		case UP_KEY:
@@ -188,7 +189,7 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 			printHelp();
 			wasDirection = false;
 			break;
-		case EXIT_KEY:
+		case QUIT_KEY:
 			return {Direction(), true};
 			break;
 		default:
@@ -215,6 +216,8 @@ bool GameMode::setArtifact(std::shared_ptr<Artifact> artifact,
 	}
 
 	maze->getCell(c.row, c.col)->getContent()->setArtifact(artifact);
+
+	std::cout << "set artifact at" << c.row << c.col << "\n"; //////////////////////////////////////////////
 
 	prohibited.push_back(c);
 	return prohibited.size() < (maze->getWidth() * maze->getHeight());

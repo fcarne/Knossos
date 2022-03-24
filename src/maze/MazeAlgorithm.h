@@ -20,7 +20,7 @@ public:
 	virtual ~MazeAlgorithm() = default;
 	virtual std::unique_ptr<Maze> generate(uint16_t height, uint16_t width,
 			bool showConstruction, const Coordinates &startingCell,
-			const Room &cellValue, const uint32_t seed) = 0;
+			std::shared_ptr<Room> cellValue, const uint32_t seed) = 0;
 };
 
 #endif /* MAZE_MAZEALGORITHM_H_ */

@@ -13,6 +13,7 @@
 #include <functional>
 #include <fstream>
 #include <chrono>
+#include <iterator>
 
 namespace utils {
 inline void clear_screen() {
@@ -25,7 +26,7 @@ inline void clear_screen() {
 }
 
 template<class K, class V>
-inline std::vector<K> keyList(std::unordered_map<K, V> map) {
+inline std::vector<K> keyList(std::unordered_map<K, V> &map) {
 	std::vector<K> keys;
 
 	std::transform(map.begin(), map.end(), std::back_inserter(keys),
@@ -46,7 +47,7 @@ inline nlohmann::json readJsonFile(std::string filename) {
 }
 
 template<class E>
-inline void parseJsonIntoList(std::string filename, std::vector<E> list,
+inline void parseJsonIntoList(std::string filename, std::vector<E> &list,
 		std::function<E(nlohmann::json)> parser) {
 
 	auto j = readJsonFile(filename);
@@ -54,11 +55,12 @@ inline void parseJsonIntoList(std::string filename, std::vector<E> list,
 	list.clear();
 	list.reserve(j.size());
 
-	std::transform(j.begin(), j.end(), list.begin(), parser);
+	std::transform(j.begin(), j.end(), std::back_inserter(list), parser);
 }
 
 template<class K, class V>
-inline void parseJsonIntoMap(std::string filename, std::unordered_map<K, V> map,
+inline void parseJsonIntoMap(std::string filename,
+		std::unordered_map<K, V> &map,
 		std::function<std::pair<K, V>(nlohmann::json)> parser) {
 
 	auto j = readJsonFile(filename);
@@ -75,12 +77,11 @@ inline std::tuple<Durations...> break_down_durations(DurationIn d) {
 	using discard=int[];
 	(void) discard { 0,
 			(void((
-				(std::get<Durations>(retval) = std::chrono::duration_cast<Durations>(d)),
-				(d -= std::chrono::duration_cast<DurationIn>(std::get<Durations>(retval)))
-			)),0)... };
+									(std::get<Durations>(retval) = std::chrono::duration_cast<Durations>(d)),
+									(d -= std::chrono::duration_cast<DurationIn>(std::get<Durations>(retval)))
+							)),0)... };
 	return retval;
 }
 }
-
 
 #endif /* UTILS_UTILS_H_ */

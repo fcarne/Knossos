@@ -48,3 +48,6 @@ void Room::draw() {
 	}
 }
 
+std::shared_ptr<Room> Room::clone() {
+	return std::make_shared<Room>(*this);
+}

@@ -13,15 +13,18 @@
 #include <game/TimeTrial.h>
 #include <game/Dungeon.h>
 
+#include <game/init/BreedCollection.h>
+
 #include <conio.h>
 #include <windows.h>
 
 int main() {
-
-    SetConsoleOutputCP( 65001 );
+	SetConsoleOutputCP(65001);
 
 	std::string title =
-			R"( _   _                 _         
+			1
+					+ R"(
+ _   _                 _         
 | \ | |               | |        
 |  \| | __ _ _ __ __ _| | ____ _ 
 | . ` |/ _` | '__/ _` | |/ / _` |
@@ -68,7 +71,7 @@ int main() {
 	mode->initGame();
 	mode->play();
 
-	std::cout << "Thanks for playing\n";
-	std::cin.get();
+	std::cout << "Thanks for playing, see you again\n";
+	//std::cin.get();
 	return 0;
 }

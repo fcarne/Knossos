@@ -25,9 +25,9 @@ private:
 public:
 	using Entity::damage;
 	using Entity::getDamage;
+	using Entity::getSprite;
 	using Breed::getBreedName;
 	using Breed::getAttackString;
-	using Entity::getSprite;
 
 	virtual uint16_t attack(std::shared_ptr<Entity>);
 	virtual std::shared_ptr<MazeCell> move();

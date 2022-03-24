@@ -23,17 +23,17 @@ protected:
 	static const char DOWN_KEY = 's';
 	static const char LEFT_KEY = 'a';
 	static const char RIGHT_KEY = 'd';
-	static const char HELP_KEY = 'q';
-	static const char EXIT_KEY = 'e';
+	static const char HELP_KEY = 'e';
+	static const char QUIT_KEY = 'q';
 
 	std::unique_ptr<Maze> maze;
 	Coordinates startingCoords;
 	std::shared_ptr<Hero> hero;
 	std::mt19937 mt;
 
-	Room room;
+	std::shared_ptr<Room> room;
 
-	GameMode(Room);
+	GameMode(std::shared_ptr<Room>);
 	bool checkArtifact(std::shared_ptr<Room>);
 	bool retry();
 	void saveMaze();

@@ -14,10 +14,6 @@
 DungeonRoom::DungeonRoom() {
 }
 
-std::vector<std::weak_ptr<Enemy>> DungeonRoom::getEnemies() {
-	return enemies;
-}
-
 void DungeonRoom::addEnemy(std::shared_ptr<Enemy> enemy) {
 	enemies.push_back(enemy);
 }
@@ -31,8 +27,12 @@ void DungeonRoom::removeEnemy(std::shared_ptr<Enemy> enemy) {
 			enemies.end());
 }
 
-uint16_t DungeonRoom::getEnemiesNumber() {
-	return enemies.size();
+std::shared_ptr<Enemy> DungeonRoom::getFirstEnemy() {
+	return enemies.at(0).lock();
+}
+
+bool DungeonRoom::isEmpty() {
+	return enemies.empty();
 }
 
 void DungeonRoom::draw() {
@@ -44,4 +44,8 @@ void DungeonRoom::draw() {
 	} else {
 		std::cout << constants::EMPTY_TILE;
 	}
+}
+
+std::shared_ptr<Room> DungeonRoom::clone() {
+	return std::make_shared<DungeonRoom>(*this);
 }
