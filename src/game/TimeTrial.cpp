@@ -15,11 +15,11 @@
 #include <game/init/TrapFactory.h>
 
 TimeTrial::TimeTrial() :
-		GameMode(std::make_shared<Room>()) {
+		GameMode(std::make_shared<Room>(), false) {
 }
 
 void TimeTrial::initGame() {
-	GameMode::initGame();
+	generateMaze();
 
 	std::cout << "\n\n --- TRAPS ---\n\n";
 
@@ -41,11 +41,13 @@ void TimeTrial::initGame() {
 			break;
 	}
 
+	generateHero();
+
 	std::cout << "---------------\n";
 	std::cout << "Setup complete!\n\n";
 
 }
-void TimeTrial::play() {
+bool TimeTrial::play() {
 	std::cout << "Help:\n";
 	printHelp();
 
@@ -68,7 +70,7 @@ void TimeTrial::play() {
 			auto [d, quit] = readUserInput();
 
 			if (quit)
-				return;
+				return retry();
 
 			finish = maze->checkWinningMove(hero->getCell(), d);
 
@@ -101,6 +103,8 @@ void TimeTrial::play() {
 	std::cin.ignore();
 	saveMaze();
 
+	return retry();
+
 }
 
 void TimeTrial::printDescription() {
@@ -110,6 +114,6 @@ void TimeTrial::printDescription() {
 	std::cout
 			<< "Beware, there will be poisoned traps that will paralyze you!\n\n";
 
-	std::cout << "Press Enter to continue...\n";
+	std::cout << "Press Enter to continue...";
 	std::cin.ignore();
 }

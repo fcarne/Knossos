@@ -23,7 +23,7 @@ public:
 	void removeEnemy(std::shared_ptr<Enemy>);
 	std::shared_ptr<Enemy> getFirstEnemy();
 	bool isEmpty();
-	void draw() override;
+	std::string draw() override;
 	std::shared_ptr<Room> clone() override;
 };
 

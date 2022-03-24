@@ -9,27 +9,28 @@
 
 #include <iostream>
 #include <random>
+#include <sstream>
 
 #include <utils/Constants.h>
 
 void Maze::draw(bool drawRooms) {
-
+	std::stringstream ss;
 	// NORTH BOUND - ALWAYS
-	std::cout << constants::WALL_TILE;
+	ss << constants::WALL_TILE;
 	for (uint16_t j = 0; j < getWidth(); ++j) {
 		bool exit = winningDirection == Direction::N && j == winningRoom.col;
-		std::cout
+		ss
 				<< (exit && drawRooms
 						&& getCell(0, j)->getContent()->isVisible() ?
 						constants::EXIT_TILE : constants::WALL_TILE)
 				<< constants::WALL_TILE;
 	}
-	std::cout << "\n";
+	ss << "\n";
 
 	for (uint16_t i = 0; i < getHeight(); ++i) {
 		// WEST BOUND 1 - ALWAYS
 		bool exit = winningDirection == Direction::W && i == winningRoom.row;
-		std::cout
+		ss
 				<< (exit && drawRooms
 						&& getCell(i, 0)->getContent()->isVisible() ?
 						constants::EXIT_TILE : constants::WALL_TILE);
@@ -42,9 +43,9 @@ void Maze::draw(bool drawRooms) {
 
 			// DRAW ROOM
 			if (drawRooms && visible)
-				room->draw();
+				ss << room->draw();
 			else
-				std::cout << constants::EMPTY_TILE;
+				ss << constants::EMPTY_TILE;
 
 			// DRAW EAST WALL - LAST CELL OR HASN'T NEIGHBOUR, IF drawRooms CHECK IF ONE OF THE TWO ROOMS IS VISIBLE
 			bool lastIndex = j == getLastColumnIndex();
@@ -58,15 +59,15 @@ void Maze::draw(bool drawRooms) {
 					&& i == winningRoom.row;
 
 			if (exit && drawRooms && visible)
-				std::cout << constants::EXIT_TILE;
+				ss << constants::EXIT_TILE;
 			else
-				std::cout
+				ss
 						<< (drawEastWall ?
 								constants::WALL_TILE : constants::EMPTY_TILE);
 		}
 
 		// WEST BOUND 2 - ALWAYS
-		std::cout << "\n" << constants::WALL_TILE;
+		ss << "\n" << constants::WALL_TILE;
 
 		// SECOND ROW
 		for (uint16_t j = 0; j < getWidth(); ++j) {
@@ -86,14 +87,14 @@ void Maze::draw(bool drawRooms) {
 			bool exit = lastIndex && winningDirection == Direction::S
 					&& j == winningRoom.col;
 			if (exit && drawRooms && visible)
-				std::cout << constants::EXIT_TILE;
+				ss << constants::EXIT_TILE;
 			else
-				std::cout
+				ss
 						<< (drawSoutWall ?
 								constants::WALL_TILE : constants::EMPTY_TILE);
 
 			// DRAW SOUTH-EAST WALL
-			std::cout
+			ss
 					<< (lastIndex || j == getLastColumnIndex() || !drawRooms
 							|| visible
 							|| getCell(i, j + 1)->getContent()->isVisible()
@@ -101,9 +102,11 @@ void Maze::draw(bool drawRooms) {
 							|| getCell(i + 1, j + 1)->getContent()->isVisible() ?
 							constants::WALL_TILE : constants::EMPTY_TILE);
 		}
-		std::cout << "\n";
+		ss << "\n";
 	}
-	std::cout << std::endl;
+	ss << "\n";
+	std::cout << ss.str();
+	//std::cout << std::endl;
 }
 
 bool Maze::checkWinningMove(std::shared_ptr<MazeCell> current, Direction d) {

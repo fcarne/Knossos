@@ -31,22 +31,26 @@ protected:
 	std::shared_ptr<Hero> hero;
 	std::mt19937 mt;
 
-	std::shared_ptr<Room> room;
+	std::shared_ptr<Room> roomInit;
+	bool showConstruction;
 
-	GameMode(std::shared_ptr<Room>);
-	bool checkArtifact(std::shared_ptr<Room>);
+	GameMode(std::shared_ptr<Room>, bool showConstruction);
+	void generateMaze();
+	void generateHero();
+	bool setArtifact(std::shared_ptr<Artifact> artifact,
+				std::vector<Coordinates> prohibited,
+				std::uniform_int_distribution<> rowRange,
+				std::uniform_int_distribution<> colRange);
 	bool retry();
 	void saveMaze();
 	virtual void printHelp();
 	std::pair<Direction, bool> readUserInput();
-	bool setArtifact(std::shared_ptr<Artifact> artifact,
-			std::vector<Coordinates> prohibited,
-			std::uniform_int_distribution<> rowRange,
-			std::uniform_int_distribution<> colRange);
+	bool checkArtifact(std::shared_ptr<Room>);
+
 public:
 	virtual ~GameMode() = default;
-	virtual void initGame();
-	virtual void play() = 0;
+	virtual void initGame() = 0;
+	virtual bool play() = 0;
 	virtual void printDescription() = 0;
 };
 

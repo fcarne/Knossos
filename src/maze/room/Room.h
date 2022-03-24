@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 #include <artifact/Artifact.h>
 #include <grid/Clonable.h>
@@ -31,7 +32,7 @@ public:
 	void setArtifact(std::shared_ptr<Artifact>);
 	std::shared_ptr<Artifact> pickupArtifact();
 
-	virtual void draw();
+	virtual std::string draw();
 
 	std::shared_ptr<Room> clone() override;
 };

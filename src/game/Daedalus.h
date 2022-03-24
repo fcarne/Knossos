@@ -1,20 +1,20 @@
 //============================================================================
-// Name        : TimeTrial.h
+// Name        : Daedalus.h
 // Author      : Federico Carne 1059865
-// Date		   : 16 mar 2022
+// Date		   : 24 mar 2022
 // Description : 
 //============================================================================
-#ifndef GAME_TIMETRIAL_H_
-#define GAME_TIMETRIAL_H_
+#ifndef GAME_DAEDALUS_H_
+#define GAME_DAEDALUS_H_
 
 #include <game/GameMode.h>
 
-class TimeTrial: public GameMode {
+class Daedalus: public GameMode {
 public:
-	TimeTrial();
+	Daedalus();
 	void initGame() override;
 	bool play() override;
 	void printDescription() override;
 };
 
-#endif /* GAME_TIMETRIAL_H_ */
+#endif /* GAME_DAEDALUS_H_ */

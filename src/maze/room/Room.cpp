@@ -39,12 +39,12 @@ std::shared_ptr<Artifact> Room::pickupArtifact() {
 	return it;
 }
 
-void Room::draw() {
+std::string Room::draw() {
 	auto hero = this->hero.lock();
 	if (visible && hero != nullptr) {
-		std::cout << hero->getSprite();
+		return hero->getSprite();
 	} else {
-		std::cout << constants::EMPTY_TILE;
+		return constants::EMPTY_TILE;
 	}
 }
 

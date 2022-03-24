@@ -30,7 +30,7 @@ protected:
 public:
 	Dungeon();
 	void initGame() override;
-	void play() override;
+	bool play() override;
 	void printDescription() override;
 };
 

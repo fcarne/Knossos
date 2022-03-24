@@ -18,30 +18,12 @@
 #include <maze/algorithm/RecursiveDivision.h>
 #include <maze/algorithm/SideWinder.h>
 
-GameMode::GameMode(std::shared_ptr<Room> roomInit) :
-		room(roomInit) {
+GameMode::GameMode(std::shared_ptr<Room> roomInit, bool showConstruction) :
+		roomInit(roomInit), showConstruction(showConstruction) {
 }
 
-void GameMode::initGame() {
-	std::cout << " --- PLAYER DATA ---\n\n";
-
-	std::string name;
-	std::cout << "Enter your name: ";
-	std::getline(std::cin, name);
-
-	std::string tile;
-	std::cout << "Enter your sprite (a two-characters string): ";
-	std::getline(std::cin, tile);
-
-	if (tile.length() < 2) {
-		tile = constants::DEFAULT_HERO_SPRITE;
-		std::cout << "Too short, defaulted to " << tile << "\n";
-	} else if (tile.length() > 2) {
-		tile = tile.substr(0, 2);
-		std::cout << "Too long, shortened to " << tile << "\n";
-	}
-
-	std::cout << "\n\n --- MAZE DIMENSIONS ---\n\n";
+void GameMode::generateMaze() {
+	std::cout << "\n\n --- MAZE GENERATION ---\n\n";
 
 	uint16_t height;
 	do {
@@ -61,15 +43,13 @@ void GameMode::initGame() {
 		}
 	} while (width < constants::MIN_MAZE_WIDTH);
 
-	std::cout << "\n\n --- GENERATION ALGORITHM ---\n\n";
-
 	uint32_t seed;
 	std::cout << "Random seed: ";
 	std::cin >> seed;
 	mt = std::mt19937(seed);
 
 	int algorithmChoice;
-	std::cout << "Select the generation algorithm\n";
+	std::cout << "\n" << "Select the generation algorithm\n";
 	std::cout << "1) Randomized Prim\n";
 	std::cout << "2) Recursive Division\n";
 	std::cout << "3) SideWinder\n";
@@ -100,9 +80,31 @@ void GameMode::initGame() {
 	std::uniform_int_distribution<> disRow(0, height - 1);
 	startingCoords = Coordinates(disCol(mt), disRow(mt));
 
-	maze = generator.generate(height, width, false, startingCoords, room, seed);
+	maze = generator.generate(height, width, showConstruction, startingCoords,
+			roomInit, seed);
 
 	maze->setWinningMove(startingCoords, seed);
+}
+
+void GameMode::generateHero() {
+	std::cout << " --- PLAYER DATA ---\n\n";
+
+	std::string name;
+	std::cout << "Enter your name: ";
+	std::cin.ignore();
+	std::getline(std::cin, name);
+
+	std::string tile;
+	std::cout << "Enter your sprite (a two-characters string): ";
+	std::getline(std::cin, tile);
+
+	if (tile.length() < 2) {
+		tile = constants::DEFAULT_HERO_SPRITE;
+		std::cout << "Too short, defaulted to " << tile << "\n";
+	} else if (tile.length() > 2) {
+		tile = tile.substr(0, 2);
+		std::cout << "Too long, shortened to " << tile << "\n";
+	}
 
 	auto cell = maze->getCell(startingCoords.row, startingCoords.col);
 	hero = std::make_shared<Hero>(name, 256, 32, cell, tile);
@@ -110,15 +112,22 @@ void GameMode::initGame() {
 	cell->getContent()->setHero(hero);
 }
 
-bool GameMode::checkArtifact(std::shared_ptr<Room> room) {
-	auto artifact = room->getArtifact();
+bool GameMode::setArtifact(std::shared_ptr<Artifact> artifact,
+		std::vector<Coordinates> prohibited,
+		std::uniform_int_distribution<> rowRange,
+		std::uniform_int_distribution<> colRange) {
 
-	if (artifact != nullptr && artifact->isAutomatic()) {
-		std::cout << artifact->getDescription() << "\n";
-		artifact->activate(hero);
-		return true;
-	} else
-		return false;
+	Coordinates c(colRange(mt), rowRange(mt));
+
+	while (std::find(prohibited.begin(), prohibited.end(), c)
+			!= prohibited.end()) {
+		c = Coordinates(colRange(mt), rowRange(mt));
+	}
+
+	maze->getCell(c.row, c.col)->getContent()->setArtifact(artifact);
+
+	prohibited.push_back(c);
+	return prohibited.size() < (maze->getWidth() * maze->getHeight());
 }
 
 bool GameMode::retry() {
@@ -203,22 +212,13 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 
 }
 
-bool GameMode::setArtifact(std::shared_ptr<Artifact> artifact,
-		std::vector<Coordinates> prohibited,
-		std::uniform_int_distribution<> rowRange,
-		std::uniform_int_distribution<> colRange) {
+bool GameMode::checkArtifact(std::shared_ptr<Room> room) {
+	auto artifact = room->getArtifact();
 
-	Coordinates c(colRange(mt), rowRange(mt));
-
-	while (std::find(prohibited.begin(), prohibited.end(), c)
-			!= prohibited.end()) {
-		c = Coordinates(colRange(mt), rowRange(mt));
-	}
-
-	maze->getCell(c.row, c.col)->getContent()->setArtifact(artifact);
-
-	std::cout << "set artifact at" << c.row << c.col << "\n"; //////////////////////////////////////////////
-
-	prohibited.push_back(c);
-	return prohibited.size() < (maze->getWidth() * maze->getHeight());
+	if (artifact != nullptr && artifact->isAutomatic()) {
+		std::cout << artifact->getDescription() << "\n";
+		artifact->activate(hero);
+		return true;
+	} else
+		return false;
 }

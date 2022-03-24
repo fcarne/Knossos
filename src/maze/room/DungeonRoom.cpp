@@ -35,15 +35,14 @@ bool DungeonRoom::isEmpty() {
 	return enemies.empty();
 }
 
-void DungeonRoom::draw() {
+std::string DungeonRoom::draw() {
 	auto hero = this->hero.lock();
-	if (visible && hero != nullptr) {
-		std::cout << hero->getSprite();
-	} else if (visible && !enemies.empty()) {
-		std::cout << (enemies.at(0).lock()->getSprite());
-	} else {
-		std::cout << constants::EMPTY_TILE;
-	}
+	if (visible && hero != nullptr)
+		return hero->getSprite();
+	else if (visible && !enemies.empty())
+		return (enemies.at(0).lock()->getSprite());
+	else
+		return constants::EMPTY_TILE;
 }
 
 std::shared_ptr<Room> DungeonRoom::clone() {
