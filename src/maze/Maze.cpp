@@ -167,9 +167,8 @@ std::ostream& operator<<(std::ostream &outs, Maze &m) {
 			outs << (cell->hasNeighbourInDirection(Direction::S) ? "  " : "##")
 					<< "##";
 		}
-		outs << "\n";
+		if (i < m.getLastRowIndex()) outs << "\n";
 	}
-	outs << std::endl;
 
 	return outs;
 }
