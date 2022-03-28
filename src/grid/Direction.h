@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <string>
+#include <hash_fun.h>
 
 #include <grid/Coordinates.h>
 
