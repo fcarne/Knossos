@@ -16,7 +16,7 @@
 
 class Dungeon: public GameMode {
 protected:
-	enum class FigthResult : uint8_t {
+	enum class FightResult : uint8_t {
 		DEFEATED, GAME_OVER, ESCAPED, QUIT
 	};
 
@@ -26,7 +26,7 @@ protected:
 	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	void printHelp() override;
-	FigthResult fight(std::shared_ptr<Enemy>);
+	FightResult fight(std::shared_ptr<Enemy>);
 public:
 	Dungeon();
 	void initGame() override;

@@ -38,7 +38,7 @@ void Dungeon::printHelp() {
 
 }
 
-Dungeon::FigthResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
+Dungeon::FightResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 	char c;
 	bool wasFightInput;
 
@@ -82,7 +82,7 @@ Dungeon::FigthResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 				rolled = dungeonDice(mt);
 				if (rolled >= 5) {
 					std::cout << "You ran away!\n";
-					return Dungeon::FigthResult::ESCAPED;
+					return Dungeon::FightResult::ESCAPED;
 				}
 				break;
 
@@ -91,7 +91,7 @@ Dungeon::FigthResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 				wasFightInput = false;
 				break;
 			case GameMode::QUIT_KEY:
-				return Dungeon::FigthResult::QUIT;
+				return Dungeon::FightResult::QUIT;
 				break;
 			default:
 				std::cout << "Please, enter a valid character\n";
@@ -110,7 +110,7 @@ Dungeon::FigthResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 	} while (enemy->getHp() > 0 && hero->getHp() > 0);
 
 	return hero->getHp() > 0 ?
-			Dungeon::FigthResult::DEFEATED : Dungeon::FigthResult::GAME_OVER;
+			Dungeon::FightResult::DEFEATED : Dungeon::FightResult::GAME_OVER;
 
 }
 
@@ -248,7 +248,7 @@ bool Dungeon::play() {
 			auto result = fight(enemy);
 
 			switch (result) {
-			case Dungeon::FigthResult::DEFEATED:
+			case Dungeon::FightResult::DEFEATED:
 				room->removeEnemy(enemy);
 				enemies.erase(
 						std::remove_if(enemies.begin(), enemies.end(),
@@ -257,13 +257,13 @@ bool Dungeon::play() {
 								}),
 						enemies.end());
 				break;
-			case Dungeon::FigthResult::ESCAPED:
+			case Dungeon::FightResult::ESCAPED:
 				escaped = true;
 				break;
-			case Dungeon::FigthResult::GAME_OVER:
+			case Dungeon::FightResult::GAME_OVER:
 				gameOver = true;
 				break;
-			case Dungeon::FigthResult::QUIT:
+			case Dungeon::FightResult::QUIT:
 				return retry();
 			}
 		}

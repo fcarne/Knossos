@@ -114,10 +114,12 @@ bool Maze::checkWinningMove(std::shared_ptr<MazeCell> current, Direction d) {
 }
 
 void Maze::setWinningMove(Coordinates &startingCoords, uint32_t seed) {
-	std::map<Direction, uint16_t> distances = { { Direction::N,
-			startingCoords.row }, { Direction::S, getLastRowIndex()
-			- startingCoords.row }, { Direction::W, startingCoords.col }, {
-			Direction::E, getLastColumnIndex() - startingCoords.col }, };
+	std::map<Direction, uint16_t> distances = {
+			{ Direction::N, startingCoords.row },
+			{ Direction::S, getLastRowIndex() - startingCoords.row },
+			{ Direction::W, startingCoords.col },
+			{ Direction::E, getLastColumnIndex() - startingCoords.col }
+	};
 
 	using pair_type = decltype(distances)::value_type;
 	winningDirection = std::max_element(distances.begin(), distances.end(),
@@ -149,25 +151,26 @@ void Maze::setWinningMove(Coordinates &startingCoords, uint32_t seed) {
 }
 
 std::ostream& operator<<(std::ostream &outs, Maze &m) {
-	for (uint16_t j = 0; j < m.getWidth() * 2 + 1; ++j)
-		outs << "##";
-	outs << "\n";
+	for (uint16_t j = 0; j < m.getWidth(); ++j)
+		outs << "+---";
+	outs << "+" << "\n";
 
 	for (uint16_t i = 0; i < m.getHeight(); ++i) {
-		outs << "##";
+		outs << "|";
 		for (uint16_t j = 0; j < m.getWidth(); ++j) {
 			auto cell = m(i, j);
-			outs << "  "
-					<< (cell->hasNeighbourInDirection(Direction::E) ?
-							"  " : "##");
+			outs << "   "
+					<< (cell->hasNeighbourInDirection(Direction::E) ? " " : "|");
 		}
-		outs << "\n" << "##";
+		outs << "\n" << "+";
 		for (uint16_t j = 0; j < m.getWidth(); ++j) {
 			auto cell = m(i, j);
-			outs << (cell->hasNeighbourInDirection(Direction::S) ? "  " : "##")
-					<< "##";
+			outs
+					<< (cell->hasNeighbourInDirection(Direction::S) ?
+							"   " : "---") << "+";
 		}
-		if (i < m.getLastRowIndex()) outs << "\n";
+		if (i < m.getLastRowIndex())
+			outs << "\n";
 	}
 
 	return outs;
