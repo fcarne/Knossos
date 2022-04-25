@@ -87,7 +87,7 @@ void GameMode::generateMaze() {
 }
 
 void GameMode::generateHero() {
-	std::cout << " --- PLAYER DATA ---\n\n";
+	std::cout << " \n\n--- PLAYER DATA ---\n\n";
 
 	std::string name;
 	std::cout << "Enter your name: ";
@@ -179,7 +179,8 @@ std::pair<Direction, bool> GameMode::readUserInput() {
 	do {
 		wasDirection = true;
 		std::cout << "Which direction do you wanna go? ";
-		std::cin >> c; //c = _getch(); ////////////////////////////////////
+		/*std::cin >> c;*/
+		c = _getch();
 
 		switch (c) {
 		case UP_KEY:

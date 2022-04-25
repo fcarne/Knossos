@@ -56,7 +56,8 @@ Dungeon::FightResult Dungeon::fight(std::shared_ptr<Enemy> enemy) {
 			wasFightInput = true;
 			std::cout << "What do you wanna do, attack (" << ATTACK_KEY
 					<< ") or try to escape (" << RUN_AWAY_KEY << ")? ";
-			std::cin >> c; //c = _getch(); /////////////////////////////////
+			/*std::cin >> c;*/
+			c = _getch();
 
 			int rolled;
 			switch (c) {
