@@ -6,7 +6,8 @@
 //============================================================================
 #include <maze/algorithm/RandomizedPrim.h>
 
-#include <set>
+#include <unordered_set>
+#include <functional>
 
 std::unique_ptr<Maze> RandomizedPrim::generate(uint16_t height, uint16_t width,
 		bool showConstruction, const Coordinates &startingCell,
@@ -15,12 +16,23 @@ std::unique_ptr<Maze> RandomizedPrim::generate(uint16_t height, uint16_t width,
 	auto maze = std::make_unique<Maze>(height, width, cellValue);
 	std::mt19937 mt(seed);  // Random generator - Mersenne Twister algorithm
 
-	std::set<std::shared_ptr<MazeCell>> pathSet; // Keep track of possible paths to expand
+	auto hash = [&maze](const std::shared_ptr<MazeCell> &c) {
+		return (size_t) (c->getCol() * maze->getHeight() + c->getRow());
+	};
+
+	auto equal = [](const std::shared_ptr<MazeCell> &c1,
+			const std::shared_ptr<MazeCell> &c2) {
+		return c1->getCol() == c2->getCol() && c1->getRow() == c2->getRow();
+	};
+
+	std::unordered_set<std::shared_ptr<MazeCell>, decltype(hash),
+			decltype(equal)> pathSet(1, hash, equal); // Keep track of possible paths to expand
 
 	// While there is cell within the set:
 	pathSet.insert(maze->getCell(startingCell.col, startingCell.row));
 	while (!pathSet.empty()) {
 		auto cellIt = pathSet.begin();
+
 		std::advance(cellIt, mt() % pathSet.size());
 		auto cell = *cellIt;
 		cell->setVisited(true);

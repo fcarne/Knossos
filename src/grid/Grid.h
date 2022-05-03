@@ -36,7 +36,7 @@ public:
 		data.reserve(height * width);
 		for (uint16_t i = 0; i < height; ++i) {
 			for (uint16_t j = 0; j < width; ++j) {
-				data.push_back(std::make_unique<Cell>(i, j, cellValue));
+				data.push_back(std::make_shared<Cell>(i, j, cellValue));
 				//std::cout << i <<" - " << j << " -> " << getIndex(i, j) << *data[getIndex(i,j)] << "\n";
 				if (connected) {
 					if (j > 0)

@@ -7,7 +7,7 @@
 #ifndef GAME_DUNGEON_H_
 #define GAME_DUNGEON_H_
 
-#include <vector>
+#include <list>
 #include <memory>
 #include <tuple>
 
@@ -23,7 +23,7 @@ protected:
 	static const char ATTACK_KEY = 'x';
 	static const char RUN_AWAY_KEY = 'z';
 
-	std::vector<std::shared_ptr<Enemy>> enemies;
+	std::list<std::shared_ptr<Enemy>> enemies;
 
 	void printHelp() override;
 	FightResult fight(std::shared_ptr<Enemy>);

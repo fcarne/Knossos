@@ -7,7 +7,7 @@
 #ifndef MAZE_ROOM_DUNGEONROOM_H_
 #define MAZE_ROOM_DUNGEONROOM_H_
 
-#include <vector>
+#include <list>
 #include <memory>
 
 #include <maze/room/Room.h>
@@ -15,7 +15,7 @@
 
 class DungeonRoom: public Room {
 private:
-	std::vector<std::weak_ptr<Enemy>> enemies;
+	std::list<std::weak_ptr<Enemy>> enemies;
 
 public:
 	DungeonRoom();

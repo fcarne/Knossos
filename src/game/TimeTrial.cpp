@@ -53,7 +53,6 @@ bool TimeTrial::play() {
 
 	std::cout
 			<< "When you're ready, press the Enter key... Remember, you have to be fast!\n";
-	std::cin.ignore();
 	std::cin.get();
 	utils::clear_screen();
 

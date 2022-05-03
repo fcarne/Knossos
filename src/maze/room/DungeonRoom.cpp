@@ -19,16 +19,13 @@ void DungeonRoom::addEnemy(std::shared_ptr<Enemy> enemy) {
 }
 
 void DungeonRoom::removeEnemy(std::shared_ptr<Enemy> enemy) {
-	enemies.erase(
-			std::remove_if(enemies.begin(), enemies.end(),
-					[enemy](std::weak_ptr<Enemy> e) {
-						return e.lock() == enemy;
-					}),
-			enemies.end());
+	enemies.remove_if([enemy](std::weak_ptr<Enemy> e) {
+		return e.lock() == enemy;
+	});
 }
 
 std::shared_ptr<Enemy> DungeonRoom::getFirstEnemy() {
-	return enemies.at(0).lock();
+	return enemies.front().lock();
 }
 
 bool DungeonRoom::isEmpty() {
@@ -40,7 +37,7 @@ std::string DungeonRoom::draw() {
 	if (visible && hero != nullptr)
 		return hero->getSprite();
 	else if (visible && !enemies.empty())
-		return (enemies.at(0).lock()->getSprite());
+		return (enemies.front().lock()->getSprite());
 	else
 		return constants::EMPTY_TILE;
 }

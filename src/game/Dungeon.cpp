@@ -178,7 +178,6 @@ void Dungeon::initGame() {
 	uint16_t nWeapons;
 	std::string weaponsFilename;
 	std::cout << "Weapons file path: ";
-	std::cin.ignore();
 	std::getline(std::cin, weaponsFilename);
 	std::cout << "Number of weapons: ";
 	std::cin >> nWeapons;
@@ -227,7 +226,7 @@ bool Dungeon::play() {
 	printHelp();
 	std::cout
 			<< "When you're ready, press the Enter key... Remember, kill'em all!\n";
-	std::cin.ignore();
+	std::cin.get();
 	utils::clear_screen();
 
 	bool finish = false;
@@ -251,12 +250,7 @@ bool Dungeon::play() {
 			switch (result) {
 			case Dungeon::FightResult::DEFEATED:
 				room->removeEnemy(enemy);
-				enemies.erase(
-						std::remove_if(enemies.begin(), enemies.end(),
-								[enemy](std::shared_ptr<Enemy> e) {
-									return e == enemy;
-								}),
-						enemies.end());
+				enemies.remove(enemy);
 				break;
 			case Dungeon::FightResult::ESCAPED:
 				escaped = true;
